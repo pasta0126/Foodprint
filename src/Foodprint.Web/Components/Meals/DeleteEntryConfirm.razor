@@ -1,0 +1,26 @@
+@namespace Foodprint.Web.Components.Meals
+@using Foodprint.Web.Resources
+@inject IStringLocalizer<SharedResource> L
+
+<a class="fp-btn fp-btn--danger" href="@($"/entries/{EntryId}/edit?confirm=true")">@L["Common.Delete"]</a>
+
+@if (Confirm)
+{
+    <dialog open class="fp-dialog">
+        <h2 style="font-size:var(--fp-fs-lg)">@L["Meal.Delete.Title"]</h2>
+        <p>@L["Meal.Delete.Body", EntryName]</p>
+        <div style="display:flex;gap:var(--fp-space-2);justify-content:flex-end">
+            <a class="fp-btn fp-btn--secondary" href="@($"/entries/{EntryId}/edit")">@L["Common.Cancel"]</a>
+            <form method="post" action="@($"/entries/{EntryId}/delete")" style="margin:0">
+                <AntiforgeryToken />
+                <button type="submit" class="fp-btn fp-btn--danger">@L["Common.Delete"]</button>
+            </form>
+        </div>
+    </dialog>
+}
+
+@code {
+    [Parameter, EditorRequired] public Guid EntryId { get; set; }
+    [Parameter] public string EntryName { get; set; } = "";
+    [Parameter] public bool Confirm { get; set; }
+}

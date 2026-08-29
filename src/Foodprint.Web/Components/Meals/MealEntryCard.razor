@@ -1,0 +1,42 @@
+@namespace Foodprint.Web.Components.Meals
+@using Foodprint.Core.Meals
+@using Foodprint.Web.Localization
+@using Foodprint.Web.Resources
+@inject IStringLocalizer<SharedResource> L
+
+<article class="fp-entry">
+    <div class="fp-entry__time">@LocalFormats.Time(LocalTime)</div>
+    <div class="fp-entry__body">
+        <div class="fp-entry__name">@Entry.Name</div>
+        <div class="fp-entry__meta">
+            @if (Entry.MealGroupKey is not null)
+            {
+                <span class="fp-chip">@L[$"MealGroup.{Entry.MealGroupKey}"]</span>
+            }
+            @if (Portion is not null)
+            {
+                <span class="fp-chip">@Portion</span>
+            }
+            @foreach (var tag in Entry.Tags)
+            {
+                <span class="fp-chip">#@tag</span>
+            }
+            @if (!string.IsNullOrEmpty(Entry.Notes))
+            {
+                <span class="fp-entry__note" title="@Entry.Notes" aria-label="@L["Meal.HasNotes"]">📝</span>
+            }
+        </div>
+    </div>
+    <a class="fp-btn fp-btn--ghost" href="@($"/entries/{Entry.Id}/edit")">@L["Common.Edit"]</a>
+</article>
+
+@code {
+    [Parameter, EditorRequired] public MealEntryView Entry { get; set; } = default!;
+    [Parameter, EditorRequired] public TimeZoneInfo Zone { get; set; } = TimeZoneInfo.Utc;
+
+    private DateTime LocalTime => TimeZoneInfo.ConvertTimeFromUtc(Entry.EatenAtUtc, Zone);
+
+    private string? Portion => Entry.PortionSize is { } s
+        ? L[$"Meal.Size.{s}"]
+        : Entry.PortionGrams is { } g ? LocalFormats.Grams(g) : null;
+}

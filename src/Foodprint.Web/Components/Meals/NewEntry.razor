@@ -1,0 +1,50 @@
+@page "/entries/new"
+@using Foodprint.Core.Meals
+@using Foodprint.Core.Profiles
+@using Foodprint.Web.Auth
+@using Foodprint.Web.Resources
+@inject MealEntryService Entries
+@inject CurrentUser Me
+@inject NavigationManager Nav
+@inject IStringLocalizer<SharedResource> L
+
+<PageTitle>@L["Meal.New.Title"] · Foodprint</PageTitle>
+
+<h1>@L["Meal.New.Title"]</h1>
+
+<FpCard>
+    <MealEntryForm Model="Model" FormName="new-entry" OnValidSubmit="Submit" SubmitText="@(L["Common.Add"])" ErrorText="@_error" />
+</FpCard>
+
+@code {
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
+    [SupplyParameterFromForm] private MealEntryFormModel Model { get; set; } = new();
+    [SupplyParameterFromQuery] private string? Date { get; set; }
+
+    private TimeZoneInfo _zone = TimeZoneInfo.Utc;
+    private string? _error;
+
+    protected override void OnInitialized()
+    {
+        _zone = ProfileService.ResolveZone(Me.TimeZoneId);
+        if (Model.Name.Length == 0 && Model.EatenAtLocal == default)
+        {
+            var localNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, _zone);
+            Model.EatenAtLocal = DateOnly.TryParseExact(Date, "yyyy-MM-dd", out var d)
+                ? d.ToDateTime(new TimeOnly(localNow.Hour, localNow.Minute))
+                : new DateTime(localNow.Year, localNow.Month, localNow.Day, localNow.Hour, localNow.Minute, 0);
+        }
+    }
+
+    private async Task Submit()
+    {
+        var result = await Entries.CreateAsync(Me.Id, Model.ToInput(_zone), HttpContext.RequestAborted);
+        if (result.Ok)
+        {
+            Nav.NavigateTo("/");
+            return;
+        }
+
+        _error = MealErrors.Describe(result.Error, L);
+    }
+}

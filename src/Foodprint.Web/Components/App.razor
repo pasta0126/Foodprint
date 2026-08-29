@@ -1,0 +1,42 @@
+@using System.Globalization
+@using Foodprint.Web.Resources
+@inject IStringLocalizer<SharedResource> L
+<!DOCTYPE html>
+<html lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <ResourcePreloader />
+    <link rel="stylesheet" href="@Assets["app.css"]" />
+    <link rel="stylesheet" href="@Assets["Foodprint.Web.styles.css"]" />
+    <ImportMap />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <HeadOutlet />
+    <script>
+        // Apply the persisted / preferred theme before first paint to avoid a flash.
+        (function () {
+            try {
+                var t = localStorage.getItem("fp-theme");
+                if (t === "light" || t === "dark") {
+                    document.documentElement.setAttribute("data-theme", t);
+                }
+            } catch (e) { /* storage blocked: fall back to prefers-color-scheme */ }
+        })();
+    </script>
+</head>
+
+<body>
+    <Routes />
+    <ReconnectModal />
+    <div id="blazor-error-ui" data-nosnippet>
+        @L["Error.Unhandled"]
+        <a href="." class="reload">@L["Common.Reload"]</a>
+        <span class="dismiss" role="button" tabindex="0">🗙</span>
+    </div>
+    <script src="@Assets["_framework/blazor.web.js"]"></script>
+    <script src="app-theme.js"></script>
+</body>
+
+</html>

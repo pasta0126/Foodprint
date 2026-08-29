@@ -1,0 +1,114 @@
+@page "/profile"
+@using System.ComponentModel.DataAnnotations
+@using Foodprint.Core.Localization
+@using Foodprint.Core.Profiles
+@using Foodprint.Web.Auth
+@using Foodprint.Web.Resources
+@inject ProfileService Profiles
+@inject CurrentUser Me
+@inject NavigationManager Nav
+@inject IStringLocalizer<SharedResource> L
+
+<PageTitle>@L["Profile.Title"] · Foodprint</PageTitle>
+
+<h1>@L["Profile.Title"]</h1>
+
+@if (_message is not null)
+{
+    <p class="@(_ok ? "fp-field__hint" : "fp-field__error")" role="alert">@_message</p>
+}
+
+<FpCard>
+    <EditForm Model="Input" FormName="profile" OnValidSubmit="Save" method="post">
+        <DataAnnotationsValidator />
+
+        <div class="fp-field">
+            <label class="fp-field__label" for="name">@L["Auth.DisplayName"]</label>
+            <InputText id="name" class="fp-input" @bind-Value="Input.DisplayName" />
+            <ValidationMessage For="() => Input.DisplayName" />
+        </div>
+
+        <div class="fp-field">
+            <label class="fp-field__label" for="tz">@L["Profile.TimeZone"]</label>
+            <InputSelect id="tz" class="fp-select" @bind-Value="Input.TimeZoneId">
+                @foreach (var tz in _zones)
+                {
+                    <option value="@tz">@tz</option>
+                }
+            </InputSelect>
+        </div>
+
+        <div class="fp-field">
+            <label class="fp-field__label" for="lang">@L["Language.Label"]</label>
+            <InputSelect id="lang" class="fp-select" @bind-Value="Input.Language">
+                @foreach (var lang in SupportedLanguages.All)
+                {
+                    <option value="@lang">@L[$"Language.{lang}"]</option>
+                }
+            </InputSelect>
+        </div>
+
+        <FpButton Type="submit">@L["Common.Save"]</FpButton>
+    </EditForm>
+</FpCard>
+
+<p style="margin-top:var(--fp-space-4)">
+    <FpButton Href="/profile/password" Variant="secondary">@L["Profile.ChangePassword"]</FpButton>
+</p>
+
+@code {
+    private static readonly string[] _zones =
+        TimeZoneInfo.GetSystemTimeZones().Select(z => z.Id).OrderBy(z => z, StringComparer.Ordinal).ToArray();
+
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
+    [SupplyParameterFromForm] private Model Input { get; set; } = new();
+
+    private string? _message;
+    private bool _ok;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (HttpContext.Request.Method == "GET")
+        {
+            var view = await Profiles.GetAsync(Me.Id, HttpContext.RequestAborted);
+            if (view is not null)
+            {
+                Input = new Model
+                {
+                    DisplayName = view.DisplayName,
+                    TimeZoneId = _zones.Contains(view.TimeZoneId) ? view.TimeZoneId : "Etc/UTC",
+                    Language = view.Language,
+                };
+            }
+        }
+    }
+
+    private async Task Save()
+    {
+        var error = await Profiles.UpdateAsync(
+            Me.Id, Input.DisplayName, Input.TimeZoneId, Input.Language, HttpContext.RequestAborted);
+
+        if (error == ProfileError.None)
+        {
+            // Reload so the language claim (rebuilt from the profile each request) applies.
+            Nav.NavigateTo("/profile", forceLoad: true);
+            return;
+        }
+
+        (_ok, _message) = error switch
+        {
+            ProfileError.InvalidTimeZone => (false, L["Profile.TimeZone.Invalid"].Value),
+            ProfileError.InvalidName => (false, L["Auth.DisplayName.Invalid"].Value),
+            _ => (false, L["Profile.TimeZone.Invalid"].Value),
+        };
+    }
+
+    private sealed class Model
+    {
+        [Required, StringLength(80, MinimumLength = 1)]
+        public string DisplayName { get; set; } = "";
+
+        public string TimeZoneId { get; set; } = "Etc/UTC";
+        public string Language { get; set; } = SupportedLanguages.Default;
+    }
+}

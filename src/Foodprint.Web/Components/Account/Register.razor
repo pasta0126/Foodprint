@@ -1,0 +1,75 @@
+@page "/register"
+@layout AuthLayout
+@attribute [AllowAnonymous]
+@using System.ComponentModel.DataAnnotations
+@using Foodprint.Core
+@using Foodprint.Core.Auth
+@using Foodprint.Web.Auth
+@using Foodprint.Web.Resources
+@inject RegistrationService Registration
+@inject IAttemptLimiter Limiter
+@inject AdminBootstrapper Links
+@inject IOptions<FoodprintOptions> Options
+@inject IStringLocalizer<SharedResource> L
+
+<PageTitle>@L["Auth.Register.Title"] · Foodprint</PageTitle>
+
+@if (!Options.Value.AllowSelfRegistration)
+{
+    <h1 style="font-size:var(--fp-fs-lg)">@L["Auth.Register.Title"]</h1>
+    <p>@L["Auth.Register.Closed"]</p>
+}
+else if (_link is not null)
+{
+    <h1 style="font-size:var(--fp-fs-lg)">@L["Auth.Register.LinkReadyTitle"]</h1>
+    <p>@L["Auth.Register.LinkReadyBody"]</p>
+    <code style="display:block;word-break:break-all;padding:var(--fp-space-2);background:var(--fp-surface-3);border-radius:var(--fp-radius-sm)">@_link</code>
+}
+else
+{
+    <h1 style="font-size:var(--fp-fs-lg)">@L["Auth.Register.Title"]</h1>
+    <EditForm Model="Input" FormName="register" OnValidSubmit="Submit" method="post">
+        <DataAnnotationsValidator />
+        <div class="fp-field">
+            <label class="fp-field__label" for="email">@L["Auth.Email"]</label>
+            <InputText id="email" class="fp-input" @bind-Value="Input.Email" />
+        </div>
+        <FpButton Type="submit" Extra="_fullWidth">@L["Auth.Register.Submit"]</FpButton>
+    </EditForm>
+    @if (_submitted)
+    {
+        <p style="margin-top:var(--fp-space-3);font-size:var(--fp-fs-xs);color:var(--fp-text-muted)">@L["Auth.Register.Neutral"]</p>
+    }
+}
+
+@code {
+    private static readonly Dictionary<string, object> _fullWidth = new() { ["style"] = "width:100%" };
+
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
+    [SupplyParameterFromForm] private InputModel Input { get; set; } = new();
+
+    private string? _link;
+    private bool _submitted;
+
+    private async Task Submit()
+    {
+        _submitted = true;
+        var ip = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+        if (!Limiter.TryRecord($"auth-ip:{ip}", 10, TimeSpan.FromMinutes(15)))
+        {
+            return;
+        }
+
+        var raw = await Registration.CreateLinkAsync(Input.Email, byAdmin: false, ct: HttpContext.RequestAborted);
+        if (raw is not null)
+        {
+            _link = Links.ActivationUrl(raw);
+        }
+    }
+
+    private sealed class InputModel
+    {
+        [Required, EmailAddress]
+        public string Email { get; set; } = "";
+    }
+}

@@ -1,0 +1,13 @@
+**/bin
+**/obj
+**/.vs
+**/.vscode
+**/*.db
+**/*.db-*
+**/dp-keys
+openspec
+.git
+.github
+*.md
+!README.md
+tests

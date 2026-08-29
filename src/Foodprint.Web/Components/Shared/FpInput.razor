@@ -1,0 +1,44 @@
+@namespace Foodprint.Web.Components.Shared
+
+<div class="fp-field @Class">
+    <label class="fp-field__label" for="@Id">@Label</label>
+    <input id="@Id"
+           class="fp-input"
+           type="@Type"
+           value="@CurrentValue"
+           @oninput="OnInput"
+           aria-invalid="@(HasError ? "true" : null)"
+           aria-describedby="@DescribedBy"
+           @attributes="Extra" />
+    @if (!string.IsNullOrEmpty(Hint))
+    {
+        <span class="fp-field__hint" id="@HintId">@Hint</span>
+    }
+    @if (HasError)
+    {
+        <span class="fp-field__error" id="@ErrorId" role="alert">@Error</span>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string Label { get; set; } = "";
+    [Parameter] public string Type { get; set; } = "text";
+    [Parameter] public string? CurrentValue { get; set; }
+    [Parameter] public EventCallback<string> CurrentValueChanged { get; set; }
+    [Parameter] public string? Hint { get; set; }
+    [Parameter] public string? Error { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? Extra { get; set; }
+
+    private string Id { get; } = "f" + Guid.NewGuid().ToString("N")[..8];
+    private string HintId => Id + "-hint";
+    private string ErrorId => Id + "-err";
+    private bool HasError => !string.IsNullOrEmpty(Error);
+    private string? DescribedBy =>
+        HasError && !string.IsNullOrEmpty(Hint) ? $"{ErrorId} {HintId}"
+        : HasError ? ErrorId
+        : !string.IsNullOrEmpty(Hint) ? HintId
+        : null;
+
+    private Task OnInput(ChangeEventArgs e) => CurrentValueChanged.InvokeAsync(e.Value?.ToString() ?? "");
+}

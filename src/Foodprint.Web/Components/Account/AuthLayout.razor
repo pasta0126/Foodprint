@@ -1,0 +1,16 @@
+@namespace Foodprint.Web.Components.Account
+@inherits LayoutComponentBase
+@using Foodprint.Web.Components.Shared
+
+<main class="fp-auth">
+    <div class="fp-auth__box">
+        <div class="fp-auth__brand">Foodprint</div>
+        @Body
+    </div>
+</main>
+
+<style>
+    .fp-auth { min-height: 100vh; display: grid; place-items: center; padding: var(--fp-space-5); background: var(--fp-surface-2); }
+    .fp-auth__box { width: 100%; max-width: 22rem; background: var(--fp-surface); border: 1px solid var(--fp-border); border-radius: var(--fp-radius-lg); box-shadow: var(--fp-shadow); padding: var(--fp-space-6); }
+    .fp-auth__brand { font-weight: 700; font-size: var(--fp-fs-lg); margin-bottom: var(--fp-space-4); }
+</style>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Common.Reload" xml:space="preserve"><value>Recarregar</value></data>
+  <data name="Common.Save" xml:space="preserve"><value>Desar</value></data>
+  <data name="Common.Cancel" xml:space="preserve"><value>Cancel·lar</value></data>
+  <data name="Common.Delete" xml:space="preserve"><value>Elimina</value></data>
+  <data name="Common.Add" xml:space="preserve"><value>Afegeix</value></data>
+  <data name="Common.Edit" xml:space="preserve"><value>Edita</value></data>
+  <data name="Common.Back" xml:space="preserve"><value>Torna</value></data>
+  <data name="Error.Unhandled" xml:space="preserve"><value>S'ha produït un error inesperat.</value></data>
+  <data name="App.Name" xml:space="preserve"><value>Foodprint</value></data>
+  <data name="Nav.Today" xml:space="preserve"><value>Avui</value></data>
+  <data name="Nav.History" xml:space="preserve"><value>Historial</value></data>
+  <data name="Nav.Weekly" xml:space="preserve"><value>Setmana</value></data>
+  <data name="Nav.Profile" xml:space="preserve"><value>Perfil</value></data>
+  <data name="Nav.SignOut" xml:space="preserve"><value>Tanca la sessió</value></data>
+  <data name="Nav.Toggle" xml:space="preserve"><value>Mostra o amaga la navegació</value></data>
+  <data name="Theme.Label" xml:space="preserve"><value>Tema: {0}. Activa'l per canviar-lo.</value></data>
+  <data name="Theme.System" xml:space="preserve"><value>sistema</value></data>
+  <data name="Theme.Light" xml:space="preserve"><value>clar</value></data>
+  <data name="Theme.Dark" xml:space="preserve"><value>fosc</value></data>
+  <data name="Language.Label" xml:space="preserve"><value>Idioma</value></data>
+  <data name="Language.ca" xml:space="preserve"><value>Català</value></data>
+  <data name="Language.es" xml:space="preserve"><value>Castellà</value></data>
+  <data name="Language.en" xml:space="preserve"><value>Anglès</value></data>
+  <data name="Page.Today.Title" xml:space="preserve"><value>Avui</value></data>
+  <data name="Page.NotFound.Title" xml:space="preserve"><value>Pàgina no trobada</value></data>
+  <data name="Page.NotFound.Body" xml:space="preserve"><value>Ho sentim, aquesta pàgina no existeix.</value></data>
+  <data name="MealGroup.breakfast" xml:space="preserve"><value>Esmorzar</value></data>
+  <data name="MealGroup.lunch" xml:space="preserve"><value>Dinar</value></data>
+  <data name="MealGroup.dinner" xml:space="preserve"><value>Sopar</value></data>
+  <data name="MealGroup.snack" xml:space="preserve"><value>Berenar</value></data>
+  <data name="MealGroup.other" xml:space="preserve"><value>Altre</value></data>
+  <data name="Auth.Email" xml:space="preserve"><value>Correu electrònic</value></data>
+  <data name="Auth.Password" xml:space="preserve"><value>Contrasenya</value></data>
+  <data name="Auth.NewPassword" xml:space="preserve"><value>Nova contrasenya</value></data>
+  <data name="Auth.DisplayName" xml:space="preserve"><value>Nom</value></data>
+  <data name="Auth.DisplayName.Invalid" xml:space="preserve"><value>Indica un nom d'entre 1 i 80 caràcters.</value></data>
+  <data name="Auth.Password.Rule" xml:space="preserve"><value>Com a mínim 10 caràcters.</value></data>
+  <data name="Auth.RateLimited" xml:space="preserve"><value>Massa intents. Torna-ho a provar més tard.</value></data>
+  <data name="Auth.SignIn.Title" xml:space="preserve"><value>Inicia la sessió</value></data>
+  <data name="Auth.SignIn.Submit" xml:space="preserve"><value>Entra</value></data>
+  <data name="Auth.SignIn.Failed" xml:space="preserve"><value>Correu o contrasenya incorrectes.</value></data>
+  <data name="Auth.SignIn.Help" xml:space="preserve"><value>L'accés és amb un enllaç personal que et dona l'administrador.</value></data>
+  <data name="Auth.Activate.Title" xml:space="preserve"><value>Configura el teu compte</value></data>
+  <data name="Auth.Activate.Submit" xml:space="preserve"><value>Crea el compte</value></data>
+  <data name="Auth.Link.InvalidTitle" xml:space="preserve"><value>Enllaç no vàlid</value></data>
+  <data name="Auth.Link.InvalidBody" xml:space="preserve"><value>Aquest enllaç ha caducat, s'ha fet servir o s'ha revocat. Demana'n un de nou a l'administrador.</value></data>
+  <data name="Auth.Register.Title" xml:space="preserve"><value>Sol·licita accés</value></data>
+  <data name="Auth.Register.Submit" xml:space="preserve"><value>Sol·licita</value></data>
+  <data name="Auth.Register.Closed" xml:space="preserve"><value>El registre està tancat. Demana accés a l'administrador.</value></data>
+  <data name="Auth.Register.Neutral" xml:space="preserve"><value>Si aquesta adreça es pot registrar, s'ha generat un enllaç.</value></data>
+  <data name="Auth.Register.LinkReadyTitle" xml:space="preserve"><value>El teu enllaç està a punt</value></data>
+  <data name="Auth.Register.LinkReadyBody" xml:space="preserve"><value>Obre'l per triar la contrasenya. Caduca en 30 dies i només es pot fer servir un cop.</value></data>
+  <data name="Profile.Title" xml:space="preserve"><value>Perfil</value></data>
+  <data name="Profile.TimeZone" xml:space="preserve"><value>Zona horària</value></data>
+  <data name="Profile.Saved" xml:space="preserve"><value>Canvis desats.</value></data>
+  <data name="Profile.TimeZone.Invalid" xml:space="preserve"><value>Zona horària no reconeguda.</value></data>
+  <data name="Profile.ChangePassword" xml:space="preserve"><value>Canvia la contrasenya</value></data>
+  <data name="Profile.CurrentPassword" xml:space="preserve"><value>Contrasenya actual</value></data>
+  <data name="Profile.Password.Wrong" xml:space="preserve"><value>La contrasenya actual no és correcta.</value></data>
+  <data name="Profile.Password.Changed" xml:space="preserve"><value>Contrasenya actualitzada. S'han tancat les altres sessions.</value></data>
+  <data name="Meal.Name" xml:space="preserve"><value>Nom</value></data>
+  <data name="Meal.EatenAt" xml:space="preserve"><value>Data i hora</value></data>
+  <data name="Meal.Portion" xml:space="preserve"><value>Ració</value></data>
+  <data name="Meal.Portion.None" xml:space="preserve"><value>Sense indicar</value></data>
+  <data name="Meal.Portion.Size" xml:space="preserve"><value>Mida</value></data>
+  <data name="Meal.Portion.Grams" xml:space="preserve"><value>Grams</value></data>
+  <data name="Meal.Size.small" xml:space="preserve"><value>Petita</value></data>
+  <data name="Meal.Size.medium" xml:space="preserve"><value>Mitjana</value></data>
+  <data name="Meal.Size.large" xml:space="preserve"><value>Gran</value></data>
+  <data name="Meal.Group" xml:space="preserve"><value>Tipus d'àpat</value></data>
+  <data name="Meal.Tags" xml:space="preserve"><value>Etiquetes</value></data>
+  <data name="Meal.Tags.Hint" xml:space="preserve"><value>Separades per comes.</value></data>
+  <data name="Meal.Notes" xml:space="preserve"><value>Notes</value></data>
+  <data name="Meal.New.Title" xml:space="preserve"><value>Nou àpat</value></data>
+  <data name="Meal.Edit.Title" xml:space="preserve"><value>Edita l'àpat</value></data>
+  <data name="Meal.NotFound" xml:space="preserve"><value>Àpat no trobat</value></data>
+  <data name="Meal.Delete.Title" xml:space="preserve"><value>Elimina l'àpat</value></data>
+  <data name="Meal.Delete.Body" xml:space="preserve"><value>S'eliminarà «{0}» de manera permanent.</value></data>
+  <data name="Meal.Error.NameRequired" xml:space="preserve"><value>Indica un nom.</value></data>
+  <data name="Meal.Error.NameTooLong" xml:space="preserve"><value>El nom és massa llarg.</value></data>
+  <data name="Meal.Error.FutureTime" xml:space="preserve"><value>La data no pot estar tan al futur.</value></data>
+  <data name="Meal.Error.NotesTooLong" xml:space="preserve"><value>Les notes són massa llargues.</value></data>
+  <data name="Meal.Error.PortionBoth" xml:space="preserve"><value>Indica la mida o els grams, no tots dos.</value></data>
+  <data name="Meal.Error.PortionSize" xml:space="preserve"><value>Mida de ració no vàlida.</value></data>
+  <data name="Meal.Error.PortionGrams" xml:space="preserve"><value>Els grams han d'estar entre 1 i 5000.</value></data>
+  <data name="Meal.Error.TooManyTags" xml:space="preserve"><value>Màxim 10 etiquetes.</value></data>
+  <data name="Meal.Error.TagTooLong" xml:space="preserve"><value>Cada etiqueta ha de tenir entre 1 i 30 caràcters.</value></data>
+  <data name="Meal.Error.UnknownGroup" xml:space="preserve"><value>Tipus d'àpat no vàlid.</value></data>
+  <data name="Meal.Error.Generic" xml:space="preserve"><value>No s'ha pogut desar l'àpat.</value></data>
+  <data name="Meal.HasNotes" xml:space="preserve"><value>Té notes</value></data>
+  <data name="Day.Previous" xml:space="preserve"><value>Dia anterior</value></data>
+  <data name="Day.Next" xml:space="preserve"><value>Dia següent</value></data>
+  <data name="Day.AddEntry" xml:space="preserve"><value>Afegeix un àpat</value></data>
+  <data name="Day.Empty" xml:space="preserve"><value>No hi ha àpats aquest dia. Afegeix el primer.</value></data>
+  <data name="History.Empty" xml:space="preserve"><value>Encara no has registrat cap àpat.</value></data>
+  <data name="History.Count" xml:space="preserve"><value>{0} àpats</value></data>
+  <data name="Pager.Previous" xml:space="preserve"><value>Anteriors</value></data>
+  <data name="Pager.Next" xml:space="preserve"><value>Següents</value></data>
+  <data name="Summary.Streak" xml:space="preserve"><value>Ratxa actual</value></data>
+  <data name="Summary.Streak.Unit" xml:space="preserve"><value>dies seguits</value></data>
+  <data name="Summary.PerDay" xml:space="preserve"><value>Àpats per dia</value></data>
+  <data name="Summary.TopTags" xml:space="preserve"><value>Etiquetes més usades</value></data>
+  <data name="Summary.TopTags.Empty" xml:space="preserve"><value>Sense etiquetes aquesta setmana.</value></data>
+  <data name="Meal.Size.Placeholder" xml:space="preserve"><value>— sense indicar —</value></data>
+</root>

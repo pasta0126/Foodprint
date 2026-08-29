@@ -1,0 +1,10 @@
+﻿@page "/not-found"
+@layout Foodprint.Web.Components.Layout.AppShell
+@using Foodprint.Web.Resources
+@inject IStringLocalizer<SharedResource> L
+
+<PageTitle>@L["Page.NotFound.Title"] · Foodprint</PageTitle>
+
+<h1>@L["Page.NotFound.Title"]</h1>
+<p>@L["Page.NotFound.Body"]</p>
+<FpButton Href="/">@L["Nav.Today"]</FpButton>

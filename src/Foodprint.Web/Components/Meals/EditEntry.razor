@@ -1,0 +1,75 @@
+@page "/entries/{Id:guid}/edit"
+@using Foodprint.Core.Meals
+@using Foodprint.Core.Profiles
+@using Foodprint.Web.Auth
+@using Foodprint.Web.Resources
+@inject MealEntryService Entries
+@inject CurrentUser Me
+@inject NavigationManager Nav
+@inject IStringLocalizer<SharedResource> L
+
+<PageTitle>@L["Meal.Edit.Title"] · Foodprint</PageTitle>
+
+@if (_notFound)
+{
+    <h1>@L["Meal.NotFound"]</h1>
+    <FpButton Href="/">@L["Nav.Today"]</FpButton>
+}
+else
+{
+    <h1>@L["Meal.Edit.Title"]</h1>
+    <FpCard>
+        <MealEntryForm Model="Model" FormName="edit-entry" OnValidSubmit="Submit" SubmitText="@(L["Common.Save"])" ErrorText="@_error" />
+    </FpCard>
+
+    <div style="margin-top:var(--fp-space-4)">
+        <DeleteEntryConfirm EntryId="Id" EntryName="@_name" Confirm="Confirm" />
+    </div>
+}
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
+    [SupplyParameterFromForm] private MealEntryFormModel Model { get; set; } = new();
+    [SupplyParameterFromQuery(Name = "confirm")] private bool Confirm { get; set; }
+
+    private TimeZoneInfo _zone = TimeZoneInfo.Utc;
+    private bool _notFound;
+    private string _name = "";
+    private string? _error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _zone = ProfileService.ResolveZone(Me.TimeZoneId);
+        var view = await Entries.GetAsync(Me.Id, Id, HttpContext.RequestAborted);
+        if (view is null)
+        {
+            _notFound = true;
+            return;
+        }
+
+        _name = view.Name;
+        if (HttpContext.Request.Method == "GET")
+        {
+            Model = MealEntryFormModel.FromView(view, _zone);
+        }
+    }
+
+    private async Task Submit()
+    {
+        var result = await Entries.UpdateAsync(Me.Id, Id, Model.ToInput(_zone), HttpContext.RequestAborted);
+        if (result.NotFound)
+        {
+            _notFound = true;
+            return;
+        }
+
+        if (result.Ok)
+        {
+            Nav.NavigateTo("/");
+            return;
+        }
+
+        _error = MealErrors.Describe(result.Error, L);
+    }
+}

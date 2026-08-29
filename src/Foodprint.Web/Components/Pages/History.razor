@@ -1,0 +1,64 @@
+@page "/history"
+@using Foodprint.Core.Meals
+@using Foodprint.Core.Profiles
+@using Foodprint.Web.Auth
+@using Foodprint.Web.Localization
+@using Foodprint.Web.Resources
+@inject DiaryService Diary
+@inject CurrentUser Me
+@inject IStringLocalizer<SharedResource> L
+
+<PageTitle>@L["Nav.History"] · Foodprint</PageTitle>
+
+<h1>@L["Nav.History"]</h1>
+
+@if (_page is null)
+{
+    <p>…</p>
+}
+else if (_page.Days.Count == 0)
+{
+    <FpCard>
+        <p>@L["History.Empty"]</p>
+    </FpCard>
+}
+else
+{
+    <div class="fp-entry-list">
+        @foreach (var day in _page.Days)
+        {
+            <a class="fp-history-day" href="@($"/day/{day.Date:yyyy-MM-dd}")">
+                <span class="fp-history-day__date">@LocalFormats.MediumDate(day.Date)</span>
+                <span class="fp-history-day__count">@L["History.Count", day.Count]</span>
+                <span class="fp-history-day__preview">@string.Join(" · ", day.NamePreview)</span>
+            </a>
+        }
+    </div>
+
+    <div class="fp-pager">
+        @if (_pageNumber > 1)
+        {
+            <a class="fp-btn fp-btn--secondary" href="@PageLink(_pageNumber - 1)">@L["Pager.Previous"]</a>
+        }
+        @if (_page.HasMore)
+        {
+            <a class="fp-btn fp-btn--secondary" href="@PageLink(_pageNumber + 1)">@L["Pager.Next"]</a>
+        }
+    </div>
+}
+
+@code {
+    [SupplyParameterFromQuery(Name = "page")] private int? PageParam { get; set; }
+
+    private HistoryPage? _page;
+    private int _pageNumber = 1;
+
+    private static string PageLink(int page) => $"/history?page={page}";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _pageNumber = Math.Max(PageParam ?? 1, 1);
+        var zone = ProfileService.ResolveZone(Me.TimeZoneId);
+        _page = await Diary.GetHistoryAsync(Me.Id, zone, _pageNumber);
+    }
+}

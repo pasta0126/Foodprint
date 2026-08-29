@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Common.Reload" xml:space="preserve"><value>Reload</value></data>
+  <data name="Common.Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Common.Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Common.Delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="Common.Add" xml:space="preserve"><value>Add</value></data>
+  <data name="Common.Edit" xml:space="preserve"><value>Edit</value></data>
+  <data name="Common.Back" xml:space="preserve"><value>Back</value></data>
+  <data name="Error.Unhandled" xml:space="preserve"><value>An unexpected error has occurred.</value></data>
+  <data name="App.Name" xml:space="preserve"><value>Foodprint</value></data>
+  <data name="Nav.Today" xml:space="preserve"><value>Today</value></data>
+  <data name="Nav.History" xml:space="preserve"><value>History</value></data>
+  <data name="Nav.Weekly" xml:space="preserve"><value>Weekly</value></data>
+  <data name="Nav.Profile" xml:space="preserve"><value>Profile</value></data>
+  <data name="Nav.SignOut" xml:space="preserve"><value>Sign out</value></data>
+  <data name="Nav.Toggle" xml:space="preserve"><value>Toggle navigation</value></data>
+  <data name="Theme.Label" xml:space="preserve"><value>Theme: {0}. Activate to change.</value></data>
+  <data name="Theme.System" xml:space="preserve"><value>system</value></data>
+  <data name="Theme.Light" xml:space="preserve"><value>light</value></data>
+  <data name="Theme.Dark" xml:space="preserve"><value>dark</value></data>
+  <data name="Language.Label" xml:space="preserve"><value>Language</value></data>
+  <data name="Language.ca" xml:space="preserve"><value>Catalan</value></data>
+  <data name="Language.es" xml:space="preserve"><value>Spanish</value></data>
+  <data name="Language.en" xml:space="preserve"><value>English</value></data>
+  <data name="Page.Today.Title" xml:space="preserve"><value>Today</value></data>
+  <data name="Page.NotFound.Title" xml:space="preserve"><value>Page not found</value></data>
+  <data name="Page.NotFound.Body" xml:space="preserve"><value>Sorry, that page does not exist.</value></data>
+  <data name="MealGroup.breakfast" xml:space="preserve"><value>Breakfast</value></data>
+  <data name="MealGroup.lunch" xml:space="preserve"><value>Lunch</value></data>
+  <data name="MealGroup.dinner" xml:space="preserve"><value>Dinner</value></data>
+  <data name="MealGroup.snack" xml:space="preserve"><value>Snack</value></data>
+  <data name="MealGroup.other" xml:space="preserve"><value>Other</value></data>
+  <data name="Auth.Email" xml:space="preserve"><value>Email</value></data>
+  <data name="Auth.Password" xml:space="preserve"><value>Password</value></data>
+  <data name="Auth.NewPassword" xml:space="preserve"><value>New password</value></data>
+  <data name="Auth.DisplayName" xml:space="preserve"><value>Display name</value></data>
+  <data name="Auth.DisplayName.Invalid" xml:space="preserve"><value>Enter a name between 1 and 80 characters.</value></data>
+  <data name="Auth.Password.Rule" xml:space="preserve"><value>At least 10 characters.</value></data>
+  <data name="Auth.RateLimited" xml:space="preserve"><value>Too many attempts. Try again later.</value></data>
+  <data name="Auth.SignIn.Title" xml:space="preserve"><value>Sign in</value></data>
+  <data name="Auth.SignIn.Submit" xml:space="preserve"><value>Sign in</value></data>
+  <data name="Auth.SignIn.Failed" xml:space="preserve"><value>Email or password is incorrect.</value></data>
+  <data name="Auth.SignIn.Help" xml:space="preserve"><value>Access is by a personal link from the administrator.</value></data>
+  <data name="Auth.Activate.Title" xml:space="preserve"><value>Set up your account</value></data>
+  <data name="Auth.Activate.Submit" xml:space="preserve"><value>Create account</value></data>
+  <data name="Auth.Link.InvalidTitle" xml:space="preserve"><value>Link no longer valid</value></data>
+  <data name="Auth.Link.InvalidBody" xml:space="preserve"><value>This link has expired, been used, or been revoked. Ask the administrator for a new one.</value></data>
+  <data name="Auth.Register.Title" xml:space="preserve"><value>Request access</value></data>
+  <data name="Auth.Register.Submit" xml:space="preserve"><value>Request</value></data>
+  <data name="Auth.Register.Closed" xml:space="preserve"><value>Registration is closed. Ask the administrator for access.</value></data>
+  <data name="Auth.Register.Neutral" xml:space="preserve"><value>If that address can register, a link has been generated.</value></data>
+  <data name="Auth.Register.LinkReadyTitle" xml:space="preserve"><value>Your link is ready</value></data>
+  <data name="Auth.Register.LinkReadyBody" xml:space="preserve"><value>Open it to choose your password. It expires in 30 days and can be used once.</value></data>
+  <data name="Profile.Title" xml:space="preserve"><value>Profile</value></data>
+  <data name="Profile.TimeZone" xml:space="preserve"><value>Time zone</value></data>
+  <data name="Profile.Saved" xml:space="preserve"><value>Changes saved.</value></data>
+  <data name="Profile.TimeZone.Invalid" xml:space="preserve"><value>Unrecognised time zone.</value></data>
+  <data name="Profile.ChangePassword" xml:space="preserve"><value>Change password</value></data>
+  <data name="Profile.CurrentPassword" xml:space="preserve"><value>Current password</value></data>
+  <data name="Profile.Password.Wrong" xml:space="preserve"><value>Your current password is incorrect.</value></data>
+  <data name="Profile.Password.Changed" xml:space="preserve"><value>Password updated. Your other sessions were signed out.</value></data>
+  <data name="Meal.Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Meal.EatenAt" xml:space="preserve"><value>Date and time</value></data>
+  <data name="Meal.Portion" xml:space="preserve"><value>Portion</value></data>
+  <data name="Meal.Portion.None" xml:space="preserve"><value>Not set</value></data>
+  <data name="Meal.Portion.Size" xml:space="preserve"><value>Size</value></data>
+  <data name="Meal.Portion.Grams" xml:space="preserve"><value>Grams</value></data>
+  <data name="Meal.Size.small" xml:space="preserve"><value>Small</value></data>
+  <data name="Meal.Size.medium" xml:space="preserve"><value>Medium</value></data>
+  <data name="Meal.Size.large" xml:space="preserve"><value>Large</value></data>
+  <data name="Meal.Group" xml:space="preserve"><value>Meal group</value></data>
+  <data name="Meal.Tags" xml:space="preserve"><value>Tags</value></data>
+  <data name="Meal.Tags.Hint" xml:space="preserve"><value>Comma-separated.</value></data>
+  <data name="Meal.Notes" xml:space="preserve"><value>Notes</value></data>
+  <data name="Meal.New.Title" xml:space="preserve"><value>New meal</value></data>
+  <data name="Meal.Edit.Title" xml:space="preserve"><value>Edit meal</value></data>
+  <data name="Meal.NotFound" xml:space="preserve"><value>Meal not found</value></data>
+  <data name="Meal.Delete.Title" xml:space="preserve"><value>Delete meal</value></data>
+  <data name="Meal.Delete.Body" xml:space="preserve"><value>This permanently deletes “{0}”.</value></data>
+  <data name="Meal.Error.NameRequired" xml:space="preserve"><value>Enter a name.</value></data>
+  <data name="Meal.Error.NameTooLong" xml:space="preserve"><value>The name is too long.</value></data>
+  <data name="Meal.Error.FutureTime" xml:space="preserve"><value>That time is too far in the future.</value></data>
+  <data name="Meal.Error.NotesTooLong" xml:space="preserve"><value>The notes are too long.</value></data>
+  <data name="Meal.Error.PortionBoth" xml:space="preserve"><value>Give a size or grams, not both.</value></data>
+  <data name="Meal.Error.PortionSize" xml:space="preserve"><value>Invalid portion size.</value></data>
+  <data name="Meal.Error.PortionGrams" xml:space="preserve"><value>Grams must be between 1 and 5000.</value></data>
+  <data name="Meal.Error.TooManyTags" xml:space="preserve"><value>At most 10 tags.</value></data>
+  <data name="Meal.Error.TagTooLong" xml:space="preserve"><value>Each tag must be 1 to 30 characters.</value></data>
+  <data name="Meal.Error.UnknownGroup" xml:space="preserve"><value>Invalid meal group.</value></data>
+  <data name="Meal.Error.Generic" xml:space="preserve"><value>The meal could not be saved.</value></data>
+  <data name="Meal.HasNotes" xml:space="preserve"><value>Has notes</value></data>
+  <data name="Day.Previous" xml:space="preserve"><value>Previous day</value></data>
+  <data name="Day.Next" xml:space="preserve"><value>Next day</value></data>
+  <data name="Day.AddEntry" xml:space="preserve"><value>Add a meal</value></data>
+  <data name="Day.Empty" xml:space="preserve"><value>No meals this day yet. Add the first one.</value></data>
+  <data name="History.Empty" xml:space="preserve"><value>You haven't logged any meals yet.</value></data>
+  <data name="History.Count" xml:space="preserve"><value>{0} meals</value></data>
+  <data name="Pager.Previous" xml:space="preserve"><value>Newer</value></data>
+  <data name="Pager.Next" xml:space="preserve"><value>Older</value></data>
+  <data name="Summary.Streak" xml:space="preserve"><value>Current streak</value></data>
+  <data name="Summary.Streak.Unit" xml:space="preserve"><value>days in a row</value></data>
+  <data name="Summary.PerDay" xml:space="preserve"><value>Meals per day</value></data>
+  <data name="Summary.TopTags" xml:space="preserve"><value>Most-used tags</value></data>
+  <data name="Summary.TopTags.Empty" xml:space="preserve"><value>No tags this week.</value></data>
+  <data name="Meal.Size.Placeholder" xml:space="preserve"><value>— none —</value></data>
+</root>

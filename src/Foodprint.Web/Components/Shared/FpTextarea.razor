@@ -1,0 +1,32 @@
+@namespace Foodprint.Web.Components.Shared
+
+<div class="fp-field @Class">
+    <label class="fp-field__label" for="@Id">@Label</label>
+    <textarea id="@Id"
+              class="fp-textarea"
+              rows="@Rows"
+              aria-invalid="@(HasError ? "true" : null)"
+              aria-describedby="@(HasError ? ErrorId : null)"
+              @oninput="OnInput"
+              @attributes="Extra">@CurrentValue</textarea>
+    @if (HasError)
+    {
+        <span class="fp-field__error" id="@ErrorId" role="alert">@Error</span>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string Label { get; set; } = "";
+    [Parameter] public int Rows { get; set; } = 3;
+    [Parameter] public string? CurrentValue { get; set; }
+    [Parameter] public EventCallback<string> CurrentValueChanged { get; set; }
+    [Parameter] public string? Error { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? Extra { get; set; }
+
+    private string Id { get; } = "f" + Guid.NewGuid().ToString("N")[..8];
+    private string ErrorId => Id + "-err";
+    private bool HasError => !string.IsNullOrEmpty(Error);
+
+    private Task OnInput(ChangeEventArgs e) => CurrentValueChanged.InvokeAsync(e.Value?.ToString() ?? "");
+}

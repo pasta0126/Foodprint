@@ -1,0 +1,104 @@
+@page "/activate/{Token}"
+@layout AuthLayout
+@attribute [AllowAnonymous]
+@using System.ComponentModel.DataAnnotations
+@using System.Globalization
+@using Foodprint.Core.Auth
+@using Foodprint.Web.Auth
+@using Foodprint.Web.Resources
+@inject RegistrationService Registration
+@inject AuthService Auth
+@inject IAttemptLimiter Limiter
+@inject NavigationManager Nav
+@inject IStringLocalizer<SharedResource> L
+
+<PageTitle>@L["Auth.Activate.Title"] · Foodprint</PageTitle>
+
+@if (!_redeemable)
+{
+    <h1 style="font-size:var(--fp-fs-lg)">@L["Auth.Link.InvalidTitle"]</h1>
+    <p>@L["Auth.Link.InvalidBody"]</p>
+}
+else
+{
+    <h1 style="font-size:var(--fp-fs-lg)">@L["Auth.Activate.Title"]</h1>
+    @if (_error is not null)
+    {
+        <p class="fp-field__error" role="alert">@_error</p>
+    }
+    <EditForm Model="Input" FormName="activate" OnValidSubmit="Submit" method="post">
+        <DataAnnotationsValidator />
+        <div class="fp-field">
+            <label class="fp-field__label" for="name">@L["Auth.DisplayName"]</label>
+            <InputText id="name" class="fp-input" @bind-Value="Input.DisplayName" />
+        </div>
+        <div class="fp-field">
+            <label class="fp-field__label" for="password">@L["Auth.NewPassword"]</label>
+            <InputText id="password" type="password" class="fp-input" @bind-Value="Input.Password" autocomplete="new-password" />
+            <span class="fp-field__hint">@L["Auth.Password.Rule"]</span>
+        </div>
+        <FpButton Type="submit" Extra="_fullWidth">@L["Auth.Activate.Submit"]</FpButton>
+    </EditForm>
+}
+
+@code {
+    private static readonly Dictionary<string, object> _fullWidth = new() { ["style"] = "width:100%" };
+
+    [Parameter] public string Token { get; set; } = "";
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
+    [SupplyParameterFromForm] private InputModel Input { get; set; } = new();
+
+    private bool _redeemable;
+    private string? _error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _redeemable = await Registration.IsRedeemableAsync(Token, HttpContext.RequestAborted);
+    }
+
+    private async Task Submit()
+    {
+        var ip = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+        if (!Limiter.TryRecord($"auth-ip:{ip}", 10, TimeSpan.FromMinutes(15)))
+        {
+            _error = L["Auth.RateLimited"];
+            return;
+        }
+
+        var lang = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+        var result = await Registration.ActivateAsync(Token, Input.DisplayName, Input.Password, lang, HttpContext.RequestAborted);
+
+        if (!result.Ok)
+        {
+            _error = result.Error switch
+            {
+                ActivationError.WeakPassword => L["Auth.Password.Rule"].Value,
+                ActivationError.InvalidName => L["Auth.DisplayName.Invalid"].Value,
+                _ => null,
+            };
+            _redeemable = result.Error != ActivationError.InvalidLink;
+            if (result.Error == ActivationError.InvalidLink)
+            {
+                return;
+            }
+
+            if (_error is not null)
+            {
+                return;
+            }
+        }
+
+        var token = await Auth.CreateSessionAsync(result.UserId, HttpContext.RequestAborted);
+        SessionCookie.Write(HttpContext, token);
+        Nav.NavigateTo("/", forceLoad: true);
+    }
+
+    private sealed class InputModel
+    {
+        [Required, StringLength(80, MinimumLength = 1)]
+        public string DisplayName { get; set; } = "";
+
+        [Required, MinLength(PasswordRules.MinLength)]
+        public string Password { get; set; } = "";
+    }
+}

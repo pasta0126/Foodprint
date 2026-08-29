@@ -1,0 +1,86 @@
+@namespace Foodprint.Web.Components.Meals
+@using Foodprint.Core.Domain
+@using Foodprint.Core.Meals
+@using Foodprint.Web.Resources
+@inject MealGroupService Groups
+@inject IStringLocalizer<SharedResource> L
+
+@* Static SSR form. All three portion inputs render; the chosen radio decides which
+   the server keeps (see MealEntryFormModel.ToInput). *@
+<EditForm Model="Model" FormName="@FormName" OnValidSubmit="OnValidSubmit" method="post">
+    <DataAnnotationsValidator />
+
+    @if (ErrorText is not null)
+    {
+        <p class="fp-field__error" role="alert">@ErrorText</p>
+    }
+
+    <div class="fp-field">
+        <label class="fp-field__label" for="name">@L["Meal.Name"]</label>
+        <InputText id="name" class="fp-input" @bind-Value="Model.Name" />
+        <ValidationMessage For="() => Model.Name" />
+    </div>
+
+    <div class="fp-field">
+        <label class="fp-field__label" for="eaten">@L["Meal.EatenAt"]</label>
+        <InputDate id="eaten" Type="InputDateType.DateTimeLocal" class="fp-input" @bind-Value="Model.EatenAtLocal" />
+    </div>
+
+    <fieldset class="fp-field" style="border:0;padding:0;margin:0">
+        <legend class="fp-field__label">@L["Meal.Portion"]</legend>
+        <InputRadioGroup @bind-Value="Model.PortionMode">
+            <label><InputRadio Value="PortionMode.None" /> @L["Meal.Portion.None"]</label>
+            <label><InputRadio Value="PortionMode.Size" /> @L["Meal.Portion.Size"]</label>
+            <label><InputRadio Value="PortionMode.Grams" /> @L["Meal.Portion.Grams"]</label>
+        </InputRadioGroup>
+
+        <div style="display:flex;gap:var(--fp-space-2);margin-top:var(--fp-space-2)">
+            <InputSelect id="portion-size" class="fp-select" @bind-Value="Model.PortionSize">
+                <option value="">@L["Meal.Size.Placeholder"]</option>
+                @foreach (var size in PortionSizes.All)
+                {
+                    <option value="@size">@L[$"Meal.Size.{size}"]</option>
+                }
+            </InputSelect>
+            <InputNumber id="portion-grams" class="fp-input" @bind-Value="Model.PortionGrams" placeholder="g" />
+        </div>
+        <ValidationMessage For="() => Model.PortionGrams" />
+    </fieldset>
+
+    <div class="fp-field">
+        <label class="fp-field__label" for="group">@L["Meal.Group"]</label>
+        <InputSelect id="group" class="fp-select" @bind-Value="Model.MealGroupId">
+            <option value="">@L["Meal.Size.Placeholder"]</option>
+            @foreach (var g in _groups)
+            {
+                <option value="@g.Id">@L[$"MealGroup.{g.Key}"]</option>
+            }
+        </InputSelect>
+    </div>
+
+    <div class="fp-field">
+        <label class="fp-field__label" for="tags">@L["Meal.Tags"]</label>
+        <InputText id="tags" class="fp-input" @bind-Value="Model.TagsText" />
+        <span class="fp-field__hint">@L["Meal.Tags.Hint"]</span>
+    </div>
+
+    <div class="fp-field">
+        <label class="fp-field__label" for="notes">@L["Meal.Notes"]</label>
+        <InputTextArea id="notes" class="fp-textarea" @bind-Value="Model.Notes" />
+        <ValidationMessage For="() => Model.Notes" />
+    </div>
+
+    <FpButton Type="submit">@SubmitText</FpButton>
+</EditForm>
+
+@code {
+    [Parameter, EditorRequired] public MealEntryFormModel Model { get; set; } = default!;
+    [Parameter, EditorRequired] public EventCallback OnValidSubmit { get; set; }
+    [Parameter] public string FormName { get; set; } = "meal-entry";
+    [Parameter] public string SubmitText { get; set; } = "Save";
+    [Parameter] public string? ErrorText { get; set; }
+
+    private IReadOnlyList<MealGroupOption> _groups = [];
+
+    protected override async Task OnInitializedAsync() => _groups = await Groups.ActiveAsync();
+}

@@ -1,0 +1,10 @@
+@namespace Foodprint.Web.Components.Shared
+@inject NavigationManager Nav
+
+@code {
+    protected override void OnInitialized()
+    {
+        var returnUrl = Nav.ToBaseRelativePath(Nav.Uri);
+        Nav.NavigateTo($"/sign-in?returnUrl=/{Uri.EscapeDataString(returnUrl)}", forceLoad: true);
+    }
+}

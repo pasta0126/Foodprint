@@ -1,0 +1,16 @@
+@namespace Foodprint.Web.Components.Shared
+
+<section class="fp-card @Class" @attributes="Extra">
+    @if (Title is not null)
+    {
+        <h2 style="font-size:var(--fp-fs-lg);margin-bottom:var(--fp-space-3)">@Title</h2>
+    }
+    @ChildContent
+</section>
+
+@code {
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? Extra { get; set; }
+}

@@ -1,0 +1,29 @@
+# Foodprint on void-server (Raspberry Pi, linux/arm64), behind the existing reverse proxy.
+# The proxy terminates TLS for foodprint.northernarchive.com and forwards to port 8080.
+
+services:
+  foodprint:
+    image: foodprint:latest
+    build:
+      context: .
+    restart: unless-stopped
+    environment:
+      Foodprint__AdminEmail: pasta0126@gmail.com
+      Foodprint__PublicBaseUrl: https://foodprint.northernarchive.com
+      Foodprint__AllowSelfRegistration: "false"
+      Foodprint__DefaultTimeZone: Europe/Madrid
+      # Trust the proxy network so X-Forwarded-* is honoured. Narrow this to the
+      # proxy's container network / subnet in production.
+      ForwardedHeaders__Enabled: "true"
+      # ForwardedHeaders__KnownNetworks__0: "172.18.0.0/16"
+    volumes:
+      - foodprint-data:/data     # SQLite database (back this up: see README)
+      - foodprint-keys:/keys     # Data Protection keys (losing these signs everyone out)
+    # Attach to whatever network the reverse proxy uses:
+    # networks: [proxy]
+    ports:
+      - "127.0.0.1:8080:8080"
+
+volumes:
+  foodprint-data:
+  foodprint-keys:

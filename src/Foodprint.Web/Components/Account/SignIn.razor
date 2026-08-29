@@ -1,0 +1,84 @@
+@page "/sign-in"
+@layout AuthLayout
+@attribute [AllowAnonymous]
+@using System.ComponentModel.DataAnnotations
+@using Foodprint.Core.Auth
+@using Foodprint.Web.Auth
+@using Foodprint.Web.Resources
+@inject AuthService Auth
+@inject IAttemptLimiter Limiter
+@inject NavigationManager Nav
+@inject IStringLocalizer<SharedResource> L
+
+<PageTitle>@L["Auth.SignIn.Title"] · Foodprint</PageTitle>
+
+<h1 style="font-size:var(--fp-fs-lg)">@L["Auth.SignIn.Title"]</h1>
+
+@if (_error is not null)
+{
+    <p class="fp-field__error" role="alert">@_error</p>
+}
+
+<EditForm Model="Input" FormName="signin" OnValidSubmit="Submit" method="post">
+    <DataAnnotationsValidator />
+    <div class="fp-field">
+        <label class="fp-field__label" for="email">@L["Auth.Email"]</label>
+        <InputText id="email" class="fp-input" @bind-Value="Input.Email" autocomplete="username" />
+    </div>
+    <div class="fp-field">
+        <label class="fp-field__label" for="password">@L["Auth.Password"]</label>
+        <InputText id="password" type="password" class="fp-input" @bind-Value="Input.Password" autocomplete="current-password" />
+    </div>
+    <FpButton Type="submit" Class="fp-btn--primary" Extra="_fullWidth">@L["Auth.SignIn.Submit"]</FpButton>
+</EditForm>
+
+<p style="margin-top:var(--fp-space-4);font-size:var(--fp-fs-xs);color:var(--fp-text-muted)">
+    @L["Auth.SignIn.Help"]
+</p>
+
+@code {
+    private static readonly Dictionary<string, object> _fullWidth = new() { ["style"] = "width:100%" };
+
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
+    [SupplyParameterFromForm] private InputModel Input { get; set; } = new();
+    [SupplyParameterFromQuery] private string? ReturnUrl { get; set; }
+
+    private string? _error;
+
+    private async Task Submit()
+    {
+        var ip = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+        var emailKey = ProfileEmailKey(Input.Email);
+
+        if (!Limiter.TryRecord($"auth-ip:{ip}", 10, TimeSpan.FromMinutes(15))
+            || !Limiter.TryRecord($"signin-email:{emailKey}", 5, TimeSpan.FromMinutes(15)))
+        {
+            _error = L["Auth.RateLimited"];
+            return;
+        }
+
+        var result = await Auth.SignInAsync(Input.Email, Input.Password, HttpContext.RequestAborted);
+        if (!result.Ok)
+        {
+            _error = L["Auth.SignIn.Failed"];
+            return;
+        }
+
+        SessionCookie.Write(HttpContext, result.SessionToken!);
+        Nav.NavigateTo(SafeReturn(), forceLoad: true);
+    }
+
+    private string SafeReturn() =>
+        !string.IsNullOrEmpty(ReturnUrl) && Uri.IsWellFormedUriString(ReturnUrl, UriKind.Relative) ? ReturnUrl : "/";
+
+    private static string ProfileEmailKey(string? email) => (email ?? "").Trim().ToLowerInvariant();
+
+    private sealed class InputModel
+    {
+        [Required, EmailAddress]
+        public string Email { get; set; } = "";
+
+        [Required]
+        public string Password { get; set; } = "";
+    }
+}

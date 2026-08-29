@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Foodprint.Cli/Foodprint.Cli.csproj" />
+    <Project Path="src/Foodprint.Core/Foodprint.Core.csproj" />
+    <Project Path="src/Foodprint.Web/Foodprint.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Foodprint.Tests/Foodprint.Tests.csproj" />
+  </Folder>
+</Solution>

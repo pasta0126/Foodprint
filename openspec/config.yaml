@@ -1,0 +1,62 @@
+schema: spec-driven
+
+context: |
+  Foodprint is a personal food diary / meal tracker web app.
+  Users log meals (what, when, portion), review history, and see simple
+  habit/nutrition summaries over time. Small number of invited users.
+
+  Tech stack (chosen): .NET 10, ASP.NET Core Blazor Web App (static SSR by
+  default, per-component interactive render modes — Server preferred).
+  Entity Framework Core with SQLite (dev and production).
+  Auth: email + password, but the app sends no email. Account setup is via a
+  one-time token link (30-day expiry, revocable) created by the admin or an
+  optional self-register form; opening it sets display name + password. After that,
+  normal email+password sign-in with an app-managed cookie session. Admin account
+  is Foodprint:AdminEmail (pasta0126@gmail.com); admin manages links, resets,
+  account disabling and the meal-group catalog. Not ASP.NET Core Identity.
+  Each user has a profile: display name, IANA time zone, and UI language.
+  UI is localized in Catalan (ca), Spanish (es) and English (en) from the MVP.
+  Meal timestamps are recorded from the server clock (UTC); day/week bucketing and
+  display use the user's profile time zone.
+  Testing: xUnit for units, bUnit for components, Playwright (.NET) for e2e.
+  Conventions: conventional commits; static server rendering by default,
+  interactive render mode only on components that need it.
+
+  Deployment target: void-server — a Raspberry Pi (linux-arm64), Debian 13, Docker
+  installed, an existing reverse proxy in front (app honors forwarded headers).
+  Served at foodprint.northernarchive.com, same pattern as the other void-server
+  containers. Home page after sign-in is the day view (today). DB backups: file
+  copy + volume snapshot, documented (nothing automated in the MVP).
+
+  This repo is currently empty except for README and LICENSE (Unlicense).
+
+# Project context (optional)
+# This is shown to AI when creating artifacts.
+# Add your tech stack, conventions, style guides, domain knowledge, etc.
+# Example:
+#   context: |
+#     Tech stack: TypeScript, React, Node.js
+#     We use conventional commits
+#     Domain: e-commerce platform
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always include a "Non-goals" section
+#     tasks:
+#       - Break tasks into chunks of max 2 hours
+
+# Per-operation guidance (optional)
+# Add advisory guidance for how apply and archive work should be conducted.
+# This is separate from artifact rules above.
+# Example:
+#   operations:
+#     apply:
+#       guidance:
+#         - Keep test summaries concise
+#     archive:
+#       guidance:
+#         - Summarize the archive outcome before finishing

@@ -1,0 +1,32 @@
+@namespace Foodprint.Web.Components.Shared
+
+<div class="fp-field @Class">
+    <label class="fp-field__label" for="@Id">@Label</label>
+    <select id="@Id"
+            class="fp-select"
+            aria-invalid="@(HasError ? "true" : null)"
+            aria-describedby="@(HasError ? ErrorId : null)"
+            @onchange="OnChange"
+            @attributes="Extra">
+        @ChildContent
+    </select>
+    @if (HasError)
+    {
+        <span class="fp-field__error" id="@ErrorId" role="alert">@Error</span>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string Label { get; set; } = "";
+    [Parameter] public string? Error { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? Extra { get; set; }
+
+    private string Id { get; } = "f" + Guid.NewGuid().ToString("N")[..8];
+    private string ErrorId => Id + "-err";
+    private bool HasError => !string.IsNullOrEmpty(Error);
+
+    private Task OnChange(ChangeEventArgs e) => ValueChanged.InvokeAsync(e.Value?.ToString());
+}
