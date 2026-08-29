@@ -24,18 +24,23 @@ public sealed class AdminBootstrapper(
             return null;
         }
 
-        var user = await db.Users.FirstOrDefaultAsync(u => u.Email == email, ct);
+        var user = await db.Users.Include(u => u.Profile).FirstOrDefaultAsync(u => u.Email == email, ct);
         if (user is null)
         {
             user = new User { Email = email, IsAdmin = true, CreatedAt = clock.GetUtcNow().UtcDateTime };
             db.Users.Add(user);
-            await db.SaveChangesAsync(ct);
         }
-        else if (!user.IsAdmin)
+
+        user.IsAdmin = true;
+        // Every user must have a profile; the activation form fills in the real display name.
+        user.Profile ??= new Profile
         {
-            user.IsAdmin = true;
-            await db.SaveChangesAsync(ct);
-        }
+            User = user,
+            DisplayName = email,
+            TimeZoneId = options.Value.DefaultTimeZone,
+            Language = SupportedLanguages.Default,
+        };
+        await db.SaveChangesAsync(ct);
 
         if (user.PasswordHash is not null)
         {

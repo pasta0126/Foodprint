@@ -1,5 +1,6 @@
 using Foodprint.Core.Auth;
 using Foodprint.Tests.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace Foodprint.Tests.Auth;
 
@@ -87,6 +88,32 @@ public class AuthServiceTests : IDisposable
 
         var adminReset = await Registration().CreateLinkAsync("taken@example.com", byAdmin: true);
         Assert.NotNull(adminReset);
+    }
+
+    [Fact]
+    public async Task Admin_bootstrap_creates_a_profile_and_activation_yields_a_resolvable_session()
+    {
+        var options = _db.Options(o => o.AdminEmail = "admin@example.com");
+        var boot = new AdminBootstrapper(_db.NewContext(), Registration(), _db.Clock, options);
+
+        var rawLink = await boot.EnsureAsync();
+        Assert.NotNull(rawLink);
+
+        await using (var db = _db.NewContext())
+        {
+            var admin = db.Users.Include(u => u.Profile).Single(u => u.Email == "admin@example.com");
+            Assert.True(admin.IsAdmin);
+            Assert.NotNull(admin.Profile); // regression: admin used to be created without one
+        }
+
+        var activation = await Registration().ActivateAsync(rawLink!, "Owner", "correcthorse9", "es");
+        Assert.True(activation.Ok);
+
+        var session = await Auth().CreateSessionAsync(activation.UserId);
+        var resolved = await Auth().ResolveSessionAsync(session);
+        Assert.NotNull(resolved);
+        Assert.Equal("Owner", resolved!.DisplayName);
+        Assert.True(resolved.IsAdmin);
     }
 
     [Fact]

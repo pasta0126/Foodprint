@@ -101,6 +101,11 @@ public sealed class RegistrationService(
         if (user is null)
         {
             user = new User { Email = link.Email, CreatedAt = now };
+            db.Users.Add(user);
+        }
+
+        if (user.Profile is null)
+        {
             user.Profile = new Profile
             {
                 User = user,
@@ -108,9 +113,8 @@ public sealed class RegistrationService(
                 TimeZoneId = Opt.DefaultTimeZone,
                 Language = SupportedLanguages.Match(requestLanguage) ?? SupportedLanguages.Default,
             };
-            db.Users.Add(user);
         }
-        else if (user.Profile is not null)
+        else
         {
             user.Profile.DisplayName = displayName;
         }

@@ -54,7 +54,8 @@ public sealed class AuthService(AppDbContext db, IPasswordHasher hasher, TimePro
             .Include(s => s.User).ThenInclude(u => u.Profile)
             .FirstOrDefaultAsync(s => s.TokenHash == hash, ct);
 
-        if (session is null || session.ExpiresAt <= now || session.User.IsDisabled || session.User.PasswordHash is null)
+        if (session is null || session.ExpiresAt <= now || session.User.IsDisabled
+            || session.User.PasswordHash is null || session.User.Profile is null)
         {
             return null;
         }
