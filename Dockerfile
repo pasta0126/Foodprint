@@ -8,14 +8,8 @@ ARG DOTNET_VERSION=10.0
 FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION} AS build
 WORKDIR /src
 
-COPY Directory.Build.props Directory.Packages.props ./
-COPY src/Foodprint.Core/Foodprint.Core.csproj src/Foodprint.Core/
-COPY src/Foodprint.Web/Foodprint.Web.csproj src/Foodprint.Web/
-COPY src/Foodprint.Cli/Foodprint.Cli.csproj src/Foodprint.Cli/
-RUN dotnet restore src/Foodprint.Web/Foodprint.Web.csproj
-
-COPY src/ src/
-RUN dotnet publish src/Foodprint.Web/Foodprint.Web.csproj -c Release -o /app --no-restore
+COPY . .
+RUN dotnet publish src/Foodprint.Web/Foodprint.Web.csproj -c Release -o /app
 
 # aspnet runtime image ships tzdata, which TimeZoneInfo needs for profile time zones.
 FROM mcr.microsoft.com/dotnet/aspnet:${DOTNET_VERSION} AS runtime
