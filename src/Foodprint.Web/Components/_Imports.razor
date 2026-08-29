@@ -10,6 +10,10 @@
 @using Microsoft.Extensions.Options
 @using Microsoft.AspNetCore.Authorization
 @using Foodprint.Web.Components.Account
+
+@* Secure by default: every routable page requires a session unless it opts out
+   with [AllowAnonymous]. Enforced by AuthorizeRouteView (and endpoint metadata). *@
+@attribute [Authorize]
 @using Foodprint.Web
 @using Foodprint.Web.Components
 @using Foodprint.Web.Components.Layout

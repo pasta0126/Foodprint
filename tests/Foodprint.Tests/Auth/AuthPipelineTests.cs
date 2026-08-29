@@ -26,6 +26,19 @@ public class AuthPipelineTests(FoodprintWebFactory factory) : IClassFixture<Food
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
+    [Theory]
+    [InlineData("/app-theme.js")]
+    [InlineData("/app.css")]
+    [InlineData("/_framework/blazor.web.js")]
+    public async Task Static_assets_load_anonymously_and_are_not_html(string path)
+    {
+        var client = factory.CreateClient(new() { AllowAutoRedirect = false });
+        var response = await client.GetAsync(path);
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.DoesNotContain("text/html", response.Content.Headers.ContentType?.MediaType ?? "");
+    }
+
     [Fact]
     public async Task Sign_in_page_is_reachable_anonymously()
     {

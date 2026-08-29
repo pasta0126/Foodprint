@@ -55,8 +55,10 @@ builder.Services.AddScoped<Foodprint.Web.Localization.ILanguagePersistence, Food
 builder.Services.AddAuthentication(SessionAuth.Scheme)
     .AddScheme<SessionAuthOptions, SessionAuthHandler>(SessionAuth.Scheme, _ => { });
 
+// No fallback policy: it would also gate static assets and _framework/*. Pages are
+// secured by `[Authorize]` in _Imports.razor (enforced via AuthorizeRouteView and
+// endpoint metadata); endpoints that need auth call RequireAuthorization().
 builder.Services.AddAuthorizationBuilder()
-    .SetFallbackPolicy(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build())
     .AddPolicy(SessionAuth.AdminPolicy, p => p.RequireRole("admin"));
 
 builder.Services.AddLocalization();
@@ -102,7 +104,7 @@ app.UseAuthorization();
 
 app.UseAntiforgery();
 
-app.MapStaticAssets();
+app.MapStaticAssets().AllowAnonymous();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
