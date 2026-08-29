@@ -24,7 +24,6 @@ COPY --from=build /app ./
 
 ENV ASPNETCORE_HTTP_PORTS=8080 \
     ASPNETCORE_ENVIRONMENT=Production \
-    Foodprint__ConnectionStrings__Default="Data Source=/data/foodprint.db" \
     ConnectionStrings__Default="Data Source=/data/foodprint.db" \
     Foodprint__DataProtectionKeyPath="/keys" \
     ForwardedHeaders__Enabled="true"

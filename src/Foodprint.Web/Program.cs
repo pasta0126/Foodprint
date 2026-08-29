@@ -30,9 +30,21 @@ builder.Services.Configure<ForwardedHeadersOptions>(opts =>
     opts.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
     opts.KnownIPNetworks.Clear();
     opts.KnownProxies.Clear();
-    foreach (var network in builder.Configuration.GetSection("ForwardedHeaders:KnownNetworks").Get<string[]>() ?? [])
+
+    var networks = builder.Configuration.GetSection("ForwardedHeaders:KnownNetworks").Get<string[]>() ?? [];
+    if (networks.Length > 0)
     {
-        opts.KnownIPNetworks.Add(System.Net.IPNetwork.Parse(network));
+        foreach (var network in networks)
+        {
+            opts.KnownIPNetworks.Add(System.Net.IPNetwork.Parse(network));
+        }
+    }
+    else
+    {
+        // No explicit proxy network configured: trust any hop. Safe here because the
+        // container is only reachable through the reverse proxy, never directly.
+        opts.KnownIPNetworks.Add(System.Net.IPNetwork.Parse("0.0.0.0/0"));
+        opts.KnownIPNetworks.Add(System.Net.IPNetwork.Parse("::/0"));
     }
 });
 
