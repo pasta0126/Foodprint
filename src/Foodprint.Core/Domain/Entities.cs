@@ -22,6 +22,7 @@ public class User
     public ICollection<Session> Sessions { get; } = new List<Session>();
     public ICollection<MealEntry> MealEntries { get; } = new List<MealEntry>();
     public ICollection<Tag> Tags { get; } = new List<Tag>();
+    public ICollection<MealFavorite> Favorites { get; } = new List<MealFavorite>();
 
     public bool IsDisabled => DisabledAt is not null;
     public bool IsActivated => PasswordHash is not null;
@@ -129,6 +130,38 @@ public class MealEntry
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     public ICollection<MealEntryTag> EntryTags { get; } = new List<MealEntryTag>();
+}
+
+/// <summary>
+/// A saved meal template scoped to one user: the reusable parts of an entry
+/// (name, portion, meal group, tags) with no time or notes. Surfaced as quick-add
+/// cards. Identified by user + normalized name + meal group.
+/// </summary>
+public class MealFavorite
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+
+    public Guid UserId { get; set; }
+    public User User { get; set; } = null!;
+
+    public required string Name { get; set; }
+
+    /// <summary>Trimmed, lower-cased <see cref="Name"/>. The dedup key together with <see cref="MealGroupId"/>.</summary>
+    public required string NameNormalized { get; set; }
+
+    /// <summary>Named portion size XOR <see cref="PortionGrams"/>. May be null on a bare template.</summary>
+    public string? PortionSize { get; set; }
+
+    public int? PortionGrams { get; set; }
+
+    public int? MealGroupId { get; set; }
+    public MealGroup? MealGroup { get; set; }
+
+    /// <summary>Normalized tags joined by ", ". Empty string when none.</summary>
+    public string TagsCsv { get; set; } = "";
+
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 }
 
 /// <summary>A free-form label scoped to one user. Normalized to trimmed lower-case.</summary>

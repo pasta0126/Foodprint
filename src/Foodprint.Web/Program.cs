@@ -111,6 +111,14 @@ app.MapRazorComponents<App>()
 app.MapLanguageEndpoints();
 app.MapAuthEndpoints();
 app.MapMealEndpoints();
+app.MapFavoriteEndpoints();
+
+// Routes removed in the home/nav merge — keep old bookmarks working.
+app.MapGet("/summary", () => Results.LocalRedirect("/")).RequireAuthorization();
+app.MapGet("/entries/new", (string? date) =>
+    Results.LocalRedirect(string.IsNullOrEmpty(date) ? "/" : $"/?date={Uri.EscapeDataString(date)}"))
+    .RequireAuthorization();
+app.MapGet("/day/{date}", (string date) => Results.LocalRedirect("/")).RequireAuthorization();
 
 app.Run();
 

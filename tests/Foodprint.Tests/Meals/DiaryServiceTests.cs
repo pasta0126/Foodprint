@@ -78,38 +78,36 @@ public class DiaryServiceTests : IDisposable
             await Add(user, baseUtc.AddDays(-i), $"day-{i}");
         }
 
-        var page1 = await Diary().GetHistoryAsync(user, Madrid, 1);
+        var page1 = await Diary().GetHistoryDaysAsync(user, Madrid, 1);
         Assert.Equal(20, page1.Days.Count);
         Assert.True(page1.HasMore);
         Assert.Equal(new DateOnly(2026, 6, 1), page1.Days[0].Date);
         Assert.True(page1.Days[0].Date > page1.Days[1].Date);
 
-        var page3 = await Diary().GetHistoryAsync(user, Madrid, 3);
+        var page3 = await Diary().GetHistoryDaysAsync(user, Madrid, 3);
         Assert.Equal(5, page3.Days.Count);
         Assert.False(page3.HasMore);
     }
 
     [Fact]
-    public async Task History_groups_multiple_entries_per_day_with_preview_and_count()
+    public async Task History_day_carries_all_its_entries_in_time_order()
     {
         var user = await NewUser();
         var d = new DateTime(2026, 5, 10, 9, 0, 0, DateTimeKind.Utc);
+        await Add(user, d.AddHours(6), "c");
         await Add(user, d, "a");
         await Add(user, d.AddHours(3), "b");
-        await Add(user, d.AddHours(6), "c");
-        await Add(user, d.AddHours(9), "dd");
 
-        var page = await Diary().GetHistoryAsync(user, Madrid, 1);
+        var page = await Diary().GetHistoryDaysAsync(user, Madrid, 1);
         var day = Assert.Single(page.Days);
-        Assert.Equal(4, day.Count);
-        Assert.Equal(3, day.NamePreview.Count);
+        Assert.Equal(["a", "b", "c"], day.Entries.Select(e => e.Name));
     }
 
     [Fact]
     public async Task History_empty_when_nothing_logged()
     {
         var user = await NewUser();
-        var page = await Diary().GetHistoryAsync(user, Madrid, 1);
+        var page = await Diary().GetHistoryDaysAsync(user, Madrid, 1);
         Assert.Empty(page.Days);
         Assert.False(page.HasMore);
     }

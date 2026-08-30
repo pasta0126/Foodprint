@@ -13,7 +13,7 @@
   <data name="Common.Back" xml:space="preserve"><value>Back</value></data>
   <data name="Error.Unhandled" xml:space="preserve"><value>An unexpected error has occurred.</value></data>
   <data name="App.Name" xml:space="preserve"><value>Foodprint</value></data>
-  <data name="Nav.Today" xml:space="preserve"><value>Today</value></data>
+  <data name="Nav.Home" xml:space="preserve"><value>Home</value></data>
   <data name="Nav.History" xml:space="preserve"><value>History</value></data>
   <data name="Nav.Weekly" xml:space="preserve"><value>Weekly</value></data>
   <data name="Nav.Profile" xml:space="preserve"><value>Profile</value></data>
@@ -102,12 +102,15 @@
   <data name="Meal.Error.UnknownGroup" xml:space="preserve"><value>Invalid meal group.</value></data>
   <data name="Meal.Error.Generic" xml:space="preserve"><value>The meal could not be saved.</value></data>
   <data name="Meal.HasNotes" xml:space="preserve"><value>Has notes</value></data>
-  <data name="Day.Previous" xml:space="preserve"><value>Previous day</value></data>
-  <data name="Day.Next" xml:space="preserve"><value>Next day</value></data>
   <data name="Day.AddEntry" xml:space="preserve"><value>Add a meal</value></data>
   <data name="Day.Empty" xml:space="preserve"><value>No meals this day yet. Add the first one.</value></data>
   <data name="History.Empty" xml:space="preserve"><value>You haven't logged any meals yet.</value></data>
-  <data name="History.Count" xml:space="preserve"><value>{0} meals</value></data>
+  <data name="Home.Title" xml:space="preserve"><value>Home</value></data>
+  <data name="Home.Log" xml:space="preserve"><value>Log a meal</value></data>
+  <data name="Home.Favorites" xml:space="preserve"><value>Favorites</value></data>
+  <data name="Home.Favorites.NoGroup" xml:space="preserve"><value>No group</value></data>
+  <data name="Meal.SaveFavorite" xml:space="preserve"><value>Save to favorites</value></data>
+  <data name="Favorite.Delete" xml:space="preserve"><value>Delete favorite</value></data>
   <data name="Pager.Previous" xml:space="preserve"><value>Newer</value></data>
   <data name="Pager.Next" xml:space="preserve"><value>Older</value></data>
   <data name="Summary.Streak" xml:space="preserve"><value>Current streak</value></data>

@@ -1,0 +1,52 @@
+@namespace Foodprint.Web.Components.Meals
+@using Foodprint.Core.Meals
+@using Foodprint.Web.Localization
+@using Foodprint.Web.Resources
+@inject IStringLocalizer<SharedResource> L
+
+@* The seven-day habit view: streak, per-day counts, top tags. Presentation only. *@
+<p style="color:var(--fp-text-muted)">@LocalFormats.MediumDate(Model.From) – @LocalFormats.MediumDate(Model.To)</p>
+
+<FpCard Title="@(L["Summary.Streak"])">
+    <p style="font-size:var(--fp-fs-2xl);font-weight:700;margin:0">@Model.Streak</p>
+    <p style="margin:0;color:var(--fp-text-muted)">@L["Summary.Streak.Unit", Model.Streak]</p>
+</FpCard>
+
+<FpCard Title="@(L["Summary.PerDay"])" Class="fp-mt">
+    <div class="fp-bars">
+        @foreach (var day in Model.PerDay)
+        {
+            <div class="fp-bar">
+                <div class="fp-bar__fill" style="height:@(BarHeight(day.Count))%"></div>
+                <div class="fp-bar__count">@day.Count</div>
+                <div class="fp-bar__label">@LocalFormats.ShortWeekday(day.Date)</div>
+            </div>
+        }
+    </div>
+</FpCard>
+
+<FpCard Title="@(L["Summary.TopTags"])" Class="fp-mt">
+    @if (Model.TopTags.Count == 0)
+    {
+        <p style="color:var(--fp-text-muted)">@L["Summary.TopTags.Empty"]</p>
+    }
+    else
+    {
+        <ul class="fp-taglist">
+            @foreach (var tag in Model.TopTags)
+            {
+                <li><span class="fp-chip">#@tag.Tag</span> <span style="color:var(--fp-text-muted)">@tag.Count</span></li>
+            }
+        </ul>
+    }
+</FpCard>
+
+@code {
+    [Parameter, EditorRequired] public WeeklySummary Model { get; set; } = default!;
+
+    private int BarHeight(int count)
+    {
+        var max = Model.PerDay.Max(d => d.Count);
+        return max == 0 ? 0 : (int)Math.Round(count * 100.0 / max);
+    }
+}

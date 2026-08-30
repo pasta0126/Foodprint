@@ -48,6 +48,39 @@ public class MealEntryFormModelTests
     }
 
     [Fact]
+    public void FromFavorite_prefills_name_portion_group_tags_and_sets_time_to_now()
+    {
+        var fav = new MealFavoriteView(Guid.NewGuid(), "Greek yogurt", "small", null, 1, "breakfast", ["quick", "protein"]);
+        var now = new DateTime(2026, 8, 30, 8, 15, 0);
+
+        var model = MealEntryFormModel.FromFavorite(fav, now);
+
+        Assert.Equal("Greek yogurt", model.Name);
+        Assert.Equal("small", model.PortionChoice);
+        Assert.Equal(1, model.MealGroupId);
+        Assert.Equal("quick, protein", model.TagsText);
+        Assert.Equal(now, model.EatenAtLocal);
+        Assert.False(model.SaveFavorite);
+    }
+
+    [Fact]
+    public void ToFavoriteDraft_carries_the_chosen_portion_and_tags()
+    {
+        var model = Base();
+        model.PortionChoice = "large";
+        model.MealGroupId = 2;
+        model.TagsText = "home, quick";
+
+        var draft = model.ToFavoriteDraft();
+
+        Assert.Equal("Toast", draft.Name);
+        Assert.Equal("large", draft.PortionSize);
+        Assert.Null(draft.PortionGrams);
+        Assert.Equal(2, draft.MealGroupId);
+        Assert.Equal(["home", "quick"], draft.Tags);
+    }
+
+    [Fact]
     public void FromView_round_trips_a_named_size()
     {
         var view = new MealEntryView(

@@ -2,7 +2,7 @@
 @using Foodprint.Core.Meals
 @using Foodprint.Core.Profiles
 @using Foodprint.Web.Auth
-@using Foodprint.Web.Localization
+@using Foodprint.Web.Components.Meals
 @using Foodprint.Web.Resources
 @inject DiaryService Diary
 @inject CurrentUser Me
@@ -24,16 +24,10 @@ else if (_page.Days.Count == 0)
 }
 else
 {
-    <div class="fp-entry-list">
-        @foreach (var day in _page.Days)
-        {
-            <a class="fp-history-day" href="@($"/day/{day.Date:yyyy-MM-dd}")">
-                <span class="fp-history-day__date">@LocalFormats.MediumDate(day.Date)</span>
-                <span class="fp-history-day__count">@L["History.Count", day.Count]</span>
-                <span class="fp-history-day__preview">@string.Join(" · ", day.NamePreview)</span>
-            </a>
-        }
-    </div>
+    @foreach (var day in _page.Days)
+    {
+        <DiaryDaySection Day="day" Zone="_zone" />
+    }
 
     <div class="fp-pager">
         @if (_pageNumber > 1)
@@ -50,15 +44,16 @@ else
 @code {
     [SupplyParameterFromQuery(Name = "page")] private int? PageParam { get; set; }
 
-    private HistoryPage? _page;
+    private HistoryDays? _page;
     private int _pageNumber = 1;
+    private TimeZoneInfo _zone = TimeZoneInfo.Utc;
 
     private static string PageLink(int page) => $"/history?page={page}";
 
     protected override async Task OnParametersSetAsync()
     {
         _pageNumber = Math.Max(PageParam ?? 1, 1);
-        var zone = ProfileService.ResolveZone(Me.TimeZoneId);
-        _page = await Diary.GetHistoryAsync(Me.Id, zone, _pageNumber);
+        _zone = ProfileService.ResolveZone(Me.TimeZoneId);
+        _page = await Diary.GetHistoryDaysAsync(Me.Id, _zone, _pageNumber);
     }
 }

@@ -5,8 +5,8 @@
 @inject MealGroupService Groups
 @inject IStringLocalizer<SharedResource> L
 
-@* Static SSR form. All three portion inputs render; the chosen radio decides which
-   the server keeps (see MealEntryFormModel.ToInput). *@
+@* Static SSR form. Portion is a required named size XOR the grams disclosure
+   (see MealEntryFormModel.ToInput). *@
 <EditForm Model="Model" FormName="@FormName" OnValidSubmit="OnValidSubmit" method="post">
     <DataAnnotationsValidator />
 
@@ -77,6 +77,14 @@
         <ValidationMessage For="() => Model.Notes" />
     </div>
 
+    @if (ShowFavoriteToggle)
+    {
+        <label class="fp-field fp-check">
+            <InputCheckbox @bind-Value="Model.SaveFavorite" />
+            <span>@L["Meal.SaveFavorite"]</span>
+        </label>
+    }
+
     <FpButton Type="submit">@SubmitText</FpButton>
 </EditForm>
 
@@ -86,6 +94,7 @@
     [Parameter] public string FormName { get; set; } = "meal-entry";
     [Parameter] public string SubmitText { get; set; } = "Save";
     [Parameter] public string? ErrorText { get; set; }
+    [Parameter] public bool ShowFavoriteToggle { get; set; } = true;
 
     private IReadOnlyList<MealGroupOption> _groups = [];
 

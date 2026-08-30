@@ -26,6 +26,9 @@ public sealed class MealEntryFormModel
     /// <summary>Comma- or space-separated free text; normalized server-side.</summary>
     public string TagsText { get; set; } = "";
 
+    /// <summary>When true, saving the entry also creates/updates a favorite (see <see cref="MealFavoriteService"/>).</summary>
+    public bool SaveFavorite { get; set; }
+
     public IReadOnlyList<string> ParseTags() =>
         (TagsText ?? "").Split([',', '\n', ';'], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
@@ -50,5 +53,25 @@ public sealed class MealEntryFormModel
         MealGroupId = v.MealGroupId,
         Notes = v.Notes,
         TagsText = string.Join(", ", v.Tags),
+    };
+
+    /// <summary>Pre-fill from a favorite: its name, portion, group and tags, with eaten-at set to now.</summary>
+    public static MealEntryFormModel FromFavorite(MealFavoriteView f, DateTime nowLocal) => new()
+    {
+        Name = f.Name,
+        EatenAtLocal = nowLocal,
+        PortionChoice = f.PortionSize ?? "",
+        PortionGrams = f.PortionGrams,
+        MealGroupId = f.MealGroupId,
+        TagsText = string.Join(", ", f.Tags),
+    };
+
+    public FavoriteDraft ToFavoriteDraft() => new()
+    {
+        Name = Name,
+        PortionGrams = PortionGrams,
+        PortionSize = PortionGrams is null && !string.IsNullOrEmpty(PortionChoice) ? PortionChoice : null,
+        MealGroupId = MealGroupId,
+        Tags = ParseTags(),
     };
 }

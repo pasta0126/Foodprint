@@ -1,0 +1,64 @@
+@namespace Foodprint.Web.Components.Meals
+@using Foodprint.Core.Meals
+@using Foodprint.Web.Localization
+@using Foodprint.Web.Resources
+@inject IStringLocalizer<SharedResource> L
+
+@* Favorites as one-tap cards, grouped by meal group. Tapping a card links to the
+   home form pre-filled from that favorite; the small button deletes it. *@
+@if (Groups.Count > 0)
+{
+    <section class="fp-quickadd">
+        <h2 class="fp-quickadd__title">@L["Home.Favorites"]</h2>
+        @foreach (var group in Groups)
+        {
+            <div class="fp-quickadd__group">
+                <h3 class="fp-quickadd__grouphead">
+                    @if (group.Key is { } key)
+                    {
+                        <Icon Name="@($"group-{key}")" Size="16" />
+                        @L[$"MealGroup.{key}"]
+                    }
+                    else
+                    {
+                        @L["Home.Favorites.NoGroup"]
+                    }
+                </h3>
+                <div class="fp-quickadd__cards">
+                    @foreach (var fav in group.Favorites)
+                    {
+                        <div class="fp-quickcard">
+                            <a class="fp-quickcard__pick" href="@($"/?from={fav.Id}#log")">
+                                <span class="fp-quickcard__name">@fav.Name</span>
+                                <span class="fp-quickcard__meta">
+                                    @if (fav.PortionSize is { } size)
+                                    {
+                                        <span class="fp-chip"><Icon Name="@($"plate-{size}")" Size="14" /> @L[$"Meal.Size.{size}"]</span>
+                                    }
+                                    else if (fav.PortionGrams is { } grams)
+                                    {
+                                        <span class="fp-chip">@LocalFormats.Grams(grams)</span>
+                                    }
+                                    @foreach (var tag in fav.Tags)
+                                    {
+                                        <span class="fp-chip">#@tag</span>
+                                    }
+                                </span>
+                            </a>
+                            <form class="fp-quickcard__del" method="post" action="@($"/favorites/{fav.Id}/delete")">
+                                <AntiforgeryToken />
+                                <button type="submit" class="fp-btn fp-btn--ghost" aria-label="@L["Favorite.Delete"]">
+                                    <Icon Name="delete" Size="16" />
+                                </button>
+                            </form>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </section>
+}
+
+@code {
+    [Parameter, EditorRequired] public IReadOnlyList<FavoriteGroup> Groups { get; set; } = [];
+}

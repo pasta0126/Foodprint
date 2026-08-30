@@ -46,8 +46,8 @@ public sealed class MealJourneyE2E(AppServerFixture app) : IAsyncLifetime
         await Assertions.Expect(page.Locator("#fp-theme-control")).ToBeVisibleAsync();
         await Assertions.Expect(page.Locator("main form[action='/auth/sign-out']")).ToBeVisibleAsync();
 
-        // 3. Log an entry: grams portion + a meal group + tags.
-        await page.GotoAsync("/entries/new");
+        // 3. Log an entry from the home form: grams portion + meal group + tags, and save it as a favorite.
+        await page.GotoAsync("/");
         await page.FillAsync("#name", "Greek yogurt");
         // The meal group is pre-selected from the time of day; it can be overridden.
         Assert.NotEqual("", await page.Locator("#group").InputValueAsync());
@@ -55,26 +55,47 @@ public sealed class MealJourneyE2E(AppServerFixture app) : IAsyncLifetime
         await page.FillAsync("#portion-grams", "250");
         await page.SelectOptionAsync("#group", new SelectOptionValue { Label = "Breakfast" });
         await page.FillAsync("#tags", "breakfast, quick");
-        await page.ClickAsync("main button[type=submit]");
+        await page.GetByLabel("Save to favorites").CheckAsync();
+        await page.Locator("#log button[type=submit]").ClickAsync();
         await page.WaitForURLAsync(app.BaseUrl + "/");
+
+        // 4. It shows in history, grouped under today, with its grams portion.
+        await page.GotoAsync("/history");
         await Assertions.Expect(page.GetByText("Greek yogurt")).ToBeVisibleAsync();
         await Assertions.Expect(page.GetByText("250 g")).ToBeVisibleAsync();
 
-        // 4. Edit it.
-        await page.GetByRole(AriaRole.Link, new() { Name = "Edit" }).First.ClickAsync();        await page.WaitForSelectorAsync("#name");
+        // 5. Edit it from history.
+        await page.GetByRole(AriaRole.Link, new() { Name = "Edit" }).First.ClickAsync();
+        await page.WaitForSelectorAsync("#name");
         await page.FillAsync("#name", "Greek yogurt with honey");
-        await page.ClickAsync("main button[type=submit]");
+        await page.Locator("main button[type=submit]").First.ClickAsync();
         await page.WaitForURLAsync(app.BaseUrl + "/");
-        await Assertions.Expect(page.GetByText("Greek yogurt with honey")).ToBeVisibleAsync();
-
-        // 5. It appears in history and the weekly summary.
         await page.GotoAsync("/history");
         await Assertions.Expect(page.GetByText("Greek yogurt with honey")).ToBeVisibleAsync();
-        await page.GotoAsync("/summary");
-        await Assertions.Expect(page.GetByText("Current streak")).ToBeVisibleAsync();
-        await Assertions.Expect(page.GetByText("#breakfast")).ToBeVisibleAsync();
 
-        // 6. Sign out (from the profile page), then sign back in with email + password.
+        // 6. The weekly summary lives on the home; the old routes redirect there.
+        await page.GotoAsync("/summary");
+        await page.WaitForURLAsync(app.BaseUrl + "/");
+        await Assertions.Expect(page.GetByText("Current streak")).ToBeVisibleAsync();
+        await Assertions.Expect(page.Locator(".fp-taglist").GetByText("#breakfast")).ToBeVisibleAsync();
+        await page.GotoAsync("/entries/new");
+        await page.WaitForURLAsync(app.BaseUrl + "/");
+
+        // 7. Use the saved favorite card to pre-fill and log a second entry.
+        await page.Locator(".fp-quickcard__pick").First.ClickAsync();
+        await Assertions.Expect(page.Locator("#name")).ToHaveValueAsync("Greek yogurt");
+        await page.Locator("#log button[type=submit]").ClickAsync();
+        await page.WaitForURLAsync(app.BaseUrl + "/");
+        await page.GotoAsync("/history");
+        await Assertions.Expect(page.GetByText("Greek yogurt", new() { Exact = true })).ToBeVisibleAsync();
+
+        // 8. Delete the favorite from its card.
+        await page.GotoAsync("/");
+        await page.Locator(".fp-quickcard__del button").First.ClickAsync();
+        await page.WaitForURLAsync(app.BaseUrl + "/");
+        await Assertions.Expect(page.Locator(".fp-quickcard")).ToHaveCountAsync(0);
+
+        // 9. Sign out (from the profile page), then sign back in with email + password.
         await page.GotoAsync("/profile");
         await page.Locator("main form[action='/auth/sign-out'] button[type=submit]").ClickAsync();
         await page.WaitForURLAsync("**/sign-in");
@@ -82,14 +103,15 @@ public sealed class MealJourneyE2E(AppServerFixture app) : IAsyncLifetime
         await page.FillAsync("#password", "correcthorse9");
         await page.ClickAsync("main button[type=submit]");
         await page.WaitForURLAsync(app.BaseUrl + "/");
-        await Assertions.Expect(page.GetByText("Greek yogurt with honey")).ToBeVisibleAsync();
 
-        // 7. Delete it via the confirmation dialog.
+        // 10. Delete an entry via the confirmation dialog.
+        await page.GotoAsync("/history");
         await page.GetByRole(AriaRole.Link, new() { Name = "Edit" }).First.ClickAsync();
         await page.GetByRole(AriaRole.Link, new() { Name = "Delete" }).ClickAsync();
         await page.WaitForSelectorAsync("dialog[open]");
         await page.Locator("dialog button[type=submit]").ClickAsync();
         await page.WaitForURLAsync(app.BaseUrl + "/");
+        await page.GotoAsync("/history");
         await Assertions.Expect(page.GetByText("Greek yogurt with honey")).Not.ToBeVisibleAsync();
     }
 }

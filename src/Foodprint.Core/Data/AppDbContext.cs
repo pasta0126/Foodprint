@@ -13,6 +13,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<MealEntry> MealEntries => Set<MealEntry>();
     public DbSet<Tag> Tags => Set<Tag>();
     public DbSet<MealEntryTag> MealEntryTags => Set<MealEntryTag>();
+    public DbSet<MealFavorite> MealFavorites => Set<MealFavorite>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -66,6 +67,22 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             e.HasIndex(m => new { m.UserId, m.EatenAt });
             e.ToTable(t => t.HasCheckConstraint(
                 "CK_MealEntry_Portion",
+                "(\"PortionSize\" IS NULL OR \"PortionGrams\" IS NULL)"));
+        });
+
+        b.Entity<MealFavorite>(e =>
+        {
+            e.Property(f => f.Name).HasMaxLength(120);
+            e.Property(f => f.NameNormalized).HasMaxLength(120);
+            e.Property(f => f.PortionSize).HasMaxLength(16);
+            e.Property(f => f.TagsCsv).HasMaxLength(400);
+            e.HasOne(f => f.User).WithMany(u => u.Favorites)
+                .HasForeignKey(f => f.UserId).OnDelete(DeleteBehavior.Cascade);
+            e.HasOne(f => f.MealGroup).WithMany()
+                .HasForeignKey(f => f.MealGroupId).OnDelete(DeleteBehavior.SetNull);
+            e.HasIndex(f => new { f.UserId, f.NameNormalized, f.MealGroupId });
+            e.ToTable(t => t.HasCheckConstraint(
+                "CK_MealFavorite_Portion",
                 "(\"PortionSize\" IS NULL OR \"PortionGrams\" IS NULL)"));
         });
 

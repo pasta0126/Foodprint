@@ -1,0 +1,34 @@
+@namespace Foodprint.Web.Components.Meals
+@using Foodprint.Core.Meals
+@using Foodprint.Web.Localization
+@using Foodprint.Web.Resources
+@inject IStringLocalizer<SharedResource> L
+
+@* One day of the diary: its date, then every entry for that day as a card. *@
+<section class="fp-daysection">
+    <header class="fp-daysection__head">
+        <h2 class="fp-daysection__date">@LocalFormats.LongDate(Day.Date)</h2>
+        <a class="fp-btn fp-btn--ghost" href="@($"/?date={Day.Date:yyyy-MM-dd}#log")">
+            <Icon Name="add" /> @L["Day.AddEntry"]
+        </a>
+    </header>
+
+    @if (Day.Entries.Count == 0)
+    {
+        <FpCard><p>@L["Day.Empty"]</p></FpCard>
+    }
+    else
+    {
+        <div class="fp-entry-list">
+            @foreach (var entry in Day.Entries)
+            {
+                <MealEntryCard Entry="entry" Zone="Zone" />
+            }
+        </div>
+    }
+</section>
+
+@code {
+    [Parameter, EditorRequired] public DiaryDay Day { get; set; } = default!;
+    [Parameter, EditorRequired] public TimeZoneInfo Zone { get; set; } = TimeZoneInfo.Utc;
+}

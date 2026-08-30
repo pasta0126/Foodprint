@@ -13,7 +13,7 @@
   <data name="Common.Back" xml:space="preserve"><value>Torna</value></data>
   <data name="Error.Unhandled" xml:space="preserve"><value>S'ha produït un error inesperat.</value></data>
   <data name="App.Name" xml:space="preserve"><value>Foodprint</value></data>
-  <data name="Nav.Today" xml:space="preserve"><value>Avui</value></data>
+  <data name="Nav.Home" xml:space="preserve"><value>Inici</value></data>
   <data name="Nav.History" xml:space="preserve"><value>Historial</value></data>
   <data name="Nav.Weekly" xml:space="preserve"><value>Setmana</value></data>
   <data name="Nav.Profile" xml:space="preserve"><value>Perfil</value></data>
@@ -102,12 +102,15 @@
   <data name="Meal.Error.UnknownGroup" xml:space="preserve"><value>Tipus d'àpat no vàlid.</value></data>
   <data name="Meal.Error.Generic" xml:space="preserve"><value>No s'ha pogut desar l'àpat.</value></data>
   <data name="Meal.HasNotes" xml:space="preserve"><value>Té notes</value></data>
-  <data name="Day.Previous" xml:space="preserve"><value>Dia anterior</value></data>
-  <data name="Day.Next" xml:space="preserve"><value>Dia següent</value></data>
   <data name="Day.AddEntry" xml:space="preserve"><value>Afegeix un àpat</value></data>
   <data name="Day.Empty" xml:space="preserve"><value>No hi ha àpats aquest dia. Afegeix el primer.</value></data>
   <data name="History.Empty" xml:space="preserve"><value>Encara no has registrat cap àpat.</value></data>
-  <data name="History.Count" xml:space="preserve"><value>{0} àpats</value></data>
+  <data name="Home.Title" xml:space="preserve"><value>Inici</value></data>
+  <data name="Home.Log" xml:space="preserve"><value>Registra un àpat</value></data>
+  <data name="Home.Favorites" xml:space="preserve"><value>Preferits</value></data>
+  <data name="Home.Favorites.NoGroup" xml:space="preserve"><value>Sense tipus</value></data>
+  <data name="Meal.SaveFavorite" xml:space="preserve"><value>Desa als preferits</value></data>
+  <data name="Favorite.Delete" xml:space="preserve"><value>Elimina el preferit</value></data>
   <data name="Pager.Previous" xml:space="preserve"><value>Anteriors</value></data>
   <data name="Pager.Next" xml:space="preserve"><value>Següents</value></data>
   <data name="Summary.Streak" xml:space="preserve"><value>Ratxa actual</value></data>

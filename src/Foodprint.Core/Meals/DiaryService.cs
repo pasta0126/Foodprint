@@ -5,15 +5,12 @@ namespace Foodprint.Core.Meals;
 
 public sealed record DiaryDay(DateOnly Date, IReadOnlyList<MealEntryView> Entries);
 
-public sealed record HistoryDay(DateOnly Date, int Count, IReadOnlyList<string> NamePreview);
+public sealed record HistoryDays(IReadOnlyList<DiaryDay> Days, int Page, bool HasMore);
 
-public sealed record HistoryPage(IReadOnlyList<HistoryDay> Days, int Page, bool HasMore);
-
-/// <summary>Day view and history list over a user's meal entries, bucketed by their profile time zone.</summary>
+/// <summary>Day view and history over a user's meal entries, bucketed by their profile time zone.</summary>
 public sealed class DiaryService(AppDbContext db)
 {
     public const int HistoryPageSize = 20;
-    private const int PreviewCount = 3;
 
     public async Task<DiaryDay> GetDayAsync(Guid userId, DateOnly date, TimeZoneInfo zone, CancellationToken ct = default)
     {
@@ -28,29 +25,30 @@ public sealed class DiaryService(AppDbContext db)
         return new DiaryDay(date, entries.Select(MealEntryService.ToView).ToList());
     }
 
-    /// <summary>Reverse-chronological days that have at least one entry, 20 per page.</summary>
-    public async Task<HistoryPage> GetHistoryAsync(Guid userId, TimeZoneInfo zone, int page, CancellationToken ct = default)
+    /// <summary>
+    /// Reverse-chronological days that have at least one entry, 20 per page, each day
+    /// carrying all its entries (time ascending). Bucketed by the user's profile time zone.
+    /// </summary>
+    public async Task<HistoryDays> GetHistoryDaysAsync(Guid userId, TimeZoneInfo zone, int page, CancellationToken ct = default)
     {
         page = Math.Max(page, 1);
 
-        // Personal-scale data: pull the (time, name) pairs and bucket by local date in memory.
-        var rows = await db.MealEntries
+        // Personal-scale data: pull every entry once, bucket to local dates in memory.
+        var entries = await db.MealEntries
             .Where(e => e.UserId == userId)
-            .OrderByDescending(e => e.EatenAt)
-            .Select(e => new { e.EatenAt, e.Name })
+            .Include(e => e.MealGroup)
+            .Include(e => e.EntryTags).ThenInclude(t => t.Tag)
+            .OrderBy(e => e.EatenAt)
             .ToListAsync(ct);
 
-        var byDay = rows
-            .GroupBy(r => DayRange.LocalDate(r.EatenAt, zone))
+        var byDay = entries
+            .GroupBy(e => DayRange.LocalDate(e.EatenAt, zone))
             .OrderByDescending(g => g.Key)
-            .Select(g => new HistoryDay(
-                g.Key,
-                g.Count(),
-                g.Take(PreviewCount).Select(r => r.Name).ToList()))
+            .Select(g => new DiaryDay(g.Key, g.Select(MealEntryService.ToView).ToList()))
             .ToList();
 
         var slice = byDay.Skip((page - 1) * HistoryPageSize).Take(HistoryPageSize).ToList();
         var hasMore = byDay.Count > page * HistoryPageSize;
-        return new HistoryPage(slice, page, hasMore);
+        return new HistoryDays(slice, page, hasMore);
     }
 }

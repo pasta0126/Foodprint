@@ -13,7 +13,7 @@
   <data name="Common.Back" xml:space="preserve"><value>Volver</value></data>
   <data name="Error.Unhandled" xml:space="preserve"><value>Ha ocurrido un error inesperado.</value></data>
   <data name="App.Name" xml:space="preserve"><value>Foodprint</value></data>
-  <data name="Nav.Today" xml:space="preserve"><value>Hoy</value></data>
+  <data name="Nav.Home" xml:space="preserve"><value>Inicio</value></data>
   <data name="Nav.History" xml:space="preserve"><value>Historial</value></data>
   <data name="Nav.Weekly" xml:space="preserve"><value>Semana</value></data>
   <data name="Nav.Profile" xml:space="preserve"><value>Perfil</value></data>
@@ -102,12 +102,15 @@
   <data name="Meal.Error.UnknownGroup" xml:space="preserve"><value>Tipo de comida no válido.</value></data>
   <data name="Meal.Error.Generic" xml:space="preserve"><value>No se ha podido guardar la comida.</value></data>
   <data name="Meal.HasNotes" xml:space="preserve"><value>Tiene notas</value></data>
-  <data name="Day.Previous" xml:space="preserve"><value>Día anterior</value></data>
-  <data name="Day.Next" xml:space="preserve"><value>Día siguiente</value></data>
   <data name="Day.AddEntry" xml:space="preserve"><value>Añadir comida</value></data>
   <data name="Day.Empty" xml:space="preserve"><value>No hay comidas este día. Añade la primera.</value></data>
   <data name="History.Empty" xml:space="preserve"><value>Todavía no has registrado ninguna comida.</value></data>
-  <data name="History.Count" xml:space="preserve"><value>{0} comidas</value></data>
+  <data name="Home.Title" xml:space="preserve"><value>Inicio</value></data>
+  <data name="Home.Log" xml:space="preserve"><value>Registrar una comida</value></data>
+  <data name="Home.Favorites" xml:space="preserve"><value>Favoritos</value></data>
+  <data name="Home.Favorites.NoGroup" xml:space="preserve"><value>Sin tipo</value></data>
+  <data name="Meal.SaveFavorite" xml:space="preserve"><value>Guardar en favoritos</value></data>
+  <data name="Favorite.Delete" xml:space="preserve"><value>Eliminar favorito</value></data>
   <data name="Pager.Previous" xml:space="preserve"><value>Anteriores</value></data>
   <data name="Pager.Next" xml:space="preserve"><value>Siguientes</value></data>
   <data name="Summary.Streak" xml:space="preserve"><value>Racha actual</value></data>

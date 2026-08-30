@@ -1,0 +1,108 @@
+@page "/"
+@using Foodprint.Core.Meals
+@using Foodprint.Core.Profiles
+@using Foodprint.Web.Auth
+@using Foodprint.Web.Components.Meals
+@using Foodprint.Web.Resources
+@inject MealEntryService Entries
+@inject MealFavoriteService Favorites
+@inject MealGroupService Groups
+@inject SummaryService Summaries
+@inject CurrentUser Me
+@inject NavigationManager Nav
+@inject ILogger<Home> Logger
+@inject IStringLocalizer<SharedResource> L
+
+<PageTitle>@L["App.Name"]</PageTitle>
+
+<h1>@L["Home.Title"]</h1>
+
+<QuickAddCards Groups="_favorites" />
+
+<FpCard Class="fp-mt" id="log">
+    <h2 style="font-size:var(--fp-fs-lg);margin-bottom:var(--fp-space-3)">@L["Home.Log"]</h2>
+    <MealEntryForm Model="Model" FormName="home-entry" OnValidSubmit="Submit"
+                   SubmitText="@(L["Common.Add"])" ErrorText="@_error" />
+</FpCard>
+
+@if (_summary is not null)
+{
+    <h2 class="fp-mt">@L["Nav.Weekly"]</h2>
+    <WeeklySummaryView Model="_summary" />
+}
+
+@code {
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
+    [SupplyParameterFromForm] private MealEntryFormModel Model { get; set; } = new();
+    [SupplyParameterFromQuery] private Guid? From { get; set; }
+    [SupplyParameterFromQuery] private string? Date { get; set; }
+
+    private TimeZoneInfo _zone = TimeZoneInfo.Utc;
+    private IReadOnlyList<FavoriteGroup> _favorites = [];
+    private WeeklySummary? _summary;
+    private string? _error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _zone = ProfileService.ResolveZone(Me.TimeZoneId);
+        var ct = HttpContext.RequestAborted;
+
+        _favorites = await Favorites.ListGroupedAsync(Me.Id, ct);
+        var today = DayRange.LocalDate(DateTime.UtcNow, _zone);
+        _summary = await Summaries.GetAsync(Me.Id, _zone, today, ct);
+
+        if (HttpContext.Request.Method != "GET")
+        {
+            return;
+        }
+
+        var localNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, _zone);
+        var fromFavorite = false;
+
+        if (From is { } favId && await Favorites.GetAsync(Me.Id, favId, ct) is { } fav)
+        {
+            Model = MealEntryFormModel.FromFavorite(fav, localNow);
+            fromFavorite = true;
+        }
+
+        if (DateOnly.TryParseExact(Date, "yyyy-MM-dd", out var d))
+        {
+            Model.EatenAtLocal = d.ToDateTime(new TimeOnly(localNow.Hour, localNow.Minute));
+        }
+        else if (Model.EatenAtLocal == default)
+        {
+            Model.EatenAtLocal = localNow;
+        }
+
+        // Suggest the meal group by time of day for a blank form (a favorite carries its own).
+        if (!fromFavorite && Model.MealGroupId is null)
+        {
+            var active = await Groups.ActiveAsync(ct);
+            Model.MealGroupId = MealGroupSuggestion.ForLocalTime(TimeOnly.FromDateTime(Model.EatenAtLocal), active);
+        }
+    }
+
+    private async Task Submit()
+    {
+        var result = await Entries.CreateAsync(Me.Id, Model.ToInput(_zone), HttpContext.RequestAborted);
+        if (!result.Ok)
+        {
+            _error = MealErrors.Describe(result.Error, L);
+            return;
+        }
+
+        if (Model.SaveFavorite)
+        {
+            try
+            {
+                await Favorites.SaveAsync(Me.Id, Model.ToFavoriteDraft(), HttpContext.RequestAborted);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogWarning(ex, "Failed to save favorite for user {UserId}", Me.Id);
+            }
+        }
+
+        Nav.NavigateTo("/");
+    }
+}
