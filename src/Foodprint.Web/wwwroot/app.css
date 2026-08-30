@@ -297,6 +297,28 @@ img { max-width: 100%; }
 .fp-check { flex-direction: row; align-items: center; gap: var(--fp-space-2); }
 .fp-check input { flex: none; }
 
+/* --------------------------------------------------------- home dashboard */
+/* The home needs more room than the reading column: widen the shell for it. */
+.fp-shell__main:has(.fp-dashboard) { max-width: 76rem; }
+
+.fp-dashboard {
+    display: grid;
+    gap: var(--fp-space-5);
+    align-items: start;
+}
+.fp-dashboard__main,
+.fp-dashboard__aside { display: flex; flex-direction: column; gap: var(--fp-space-4); min-width: 0; }
+.fp-dashboard__aside .fp-mt { margin-top: 0; }
+
+@media (min-width: 60rem) {
+    .fp-dashboard { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
+}
+@media (min-width: 78rem) {
+    .fp-dashboard { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+    .fp-dashboard__main { flex-direction: row; flex-wrap: wrap; align-items: start; }
+    .fp-dashboard__main > * { flex: 1 1 20rem; }
+}
+
 /* ------------------------------------------------------------ quick-add */
 .fp-quickadd { display: flex; flex-direction: column; gap: var(--fp-space-4); }
 .fp-quickadd__title { font-size: var(--fp-fs-lg); margin: 0; }

@@ -17,19 +17,25 @@
 
 <h1>@L["Home.Title"]</h1>
 
-<QuickAddCards Groups="_favorites" />
+<div class="fp-dashboard">
+    <div class="fp-dashboard__main">
+        <QuickAddCards Groups="_favorites" />
 
-<FpCard Class="fp-mt" id="log">
-    <h2 style="font-size:var(--fp-fs-lg);margin-bottom:var(--fp-space-3)">@L["Home.Log"]</h2>
-    <MealEntryForm Model="Model" FormName="home-entry" OnValidSubmit="Submit"
-                   SubmitText="@(L["Common.Add"])" ErrorText="@_error" />
-</FpCard>
+        <FpCard id="log">
+            <h2 style="font-size:var(--fp-fs-lg);margin-bottom:var(--fp-space-3)">@L["Home.Log"]</h2>
+            <MealEntryForm Model="Model" FormName="home-entry" OnValidSubmit="Submit"
+                           SubmitText="@(L["Common.Add"])" ErrorText="@_error" />
+        </FpCard>
+    </div>
 
-@if (_summary is not null)
-{
-    <h2 class="fp-mt">@L["Nav.Weekly"]</h2>
-    <WeeklySummaryView Model="_summary" />
-}
+    @if (_summary is not null)
+    {
+        <aside class="fp-dashboard__aside">
+            <h2 style="font-size:var(--fp-fs-lg);margin:0">@L["Nav.Weekly"]</h2>
+            <WeeklySummaryView Model="_summary" />
+        </aside>
+    }
+</div>
 
 @code {
     [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
