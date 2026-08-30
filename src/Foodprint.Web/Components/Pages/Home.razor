@@ -18,22 +18,28 @@
 <h1>@L["Home.Title"]</h1>
 
 <div class="fp-dashboard">
-    <div class="fp-dashboard__main">
-        <QuickAddCards Groups="_favorites" />
-
+    <section class="fp-dashboard__col fp-dashboard__col--form">
+        <h2 class="fp-dashboard__coltitle">@L["Home.Log"]</h2>
         <FpCard id="log">
-            <h2 style="font-size:var(--fp-fs-lg);margin-bottom:var(--fp-space-3)">@L["Home.Log"]</h2>
             <MealEntryForm Model="Model" FormName="home-entry" OnValidSubmit="Submit"
                            SubmitText="@(L["Common.Add"])" ErrorText="@_error" />
         </FpCard>
-    </div>
+    </section>
+
+    @if (_favorites.Count > 0)
+    {
+        <section class="fp-dashboard__col fp-dashboard__col--cards">
+            <h2 class="fp-dashboard__coltitle">@L["Home.Favorites"]</h2>
+            <QuickAddCards Groups="_favorites" />
+        </section>
+    }
 
     @if (_summary is not null)
     {
-        <aside class="fp-dashboard__aside">
-            <h2 style="font-size:var(--fp-fs-lg);margin:0">@L["Nav.Weekly"]</h2>
+        <section class="fp-dashboard__col fp-dashboard__col--summary">
+            <h2 class="fp-dashboard__coltitle">@L["Nav.Weekly"]</h2>
             <WeeklySummaryView Model="_summary" />
-        </aside>
+        </section>
     }
 </div>
 

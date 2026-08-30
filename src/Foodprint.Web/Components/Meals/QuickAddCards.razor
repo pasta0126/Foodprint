@@ -9,10 +9,9 @@
 @if (Groups.Count > 0)
 {
     <section class="fp-quickadd">
-        <h2 class="fp-quickadd__title">@L["Home.Favorites"]</h2>
         @foreach (var group in Groups)
         {
-            <div class="fp-quickadd__group">
+            <div class="fp-quickadd__group" style="--fp-group:@MealGroupColors.For(group.Key)">
                 <h3 class="fp-quickadd__grouphead">
                     @if (group.Key is { } key)
                     {
