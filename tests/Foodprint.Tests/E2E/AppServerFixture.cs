@@ -22,7 +22,13 @@ public sealed class AppServerFixture : IAsyncLifetime
     {
         Directory.CreateDirectory(_workDir);
 
-        var dll = Path.Combine(RepoRoot(), "src", "Foodprint.Web", "bin", "Debug", "net10.0", "Foodprint.Web.dll");
+        var dll = Path.Combine(RepoRoot(), "src", "Foodprint.Web", "bin", BuildConfiguration(), "net10.0", "Foodprint.Web.dll");
+        if (!File.Exists(dll))
+        {
+            throw new InvalidOperationException(
+                $"Foodprint.Web is not built for this configuration: {dll} not found. Run `dotnet build` first.");
+        }
+
         var psi = new ProcessStartInfo("dotnet", $"exec \"{dll}\"")
         {
             WorkingDirectory = _workDir,
@@ -55,11 +61,20 @@ public sealed class AppServerFixture : IAsyncLifetime
         _process.BeginOutputReadLine();
         _process.BeginErrorReadLine();
 
-        await Task.WhenAny(ready.Task, Task.Delay(TimeSpan.FromSeconds(30)));
+        await Task.WhenAny(ready.Task, Task.Delay(TimeSpan.FromSeconds(90)));
         if (!ready.Task.IsCompleted)
         {
-            throw new InvalidOperationException("Foodprint.Web did not start within 30s.");
+            throw new InvalidOperationException("Foodprint.Web did not start within 90s.");
         }
+    }
+
+    /// <summary>The build configuration the test assembly itself was built with (Debug / Release).</summary>
+    private static string BuildConfiguration()
+    {
+        var parts = AppContext.BaseDirectory.Split(
+            Path.DirectorySeparatorChar, StringSplitOptions.RemoveEmptyEntries);
+        var bin = Array.LastIndexOf(parts, "bin");
+        return bin >= 0 && bin + 1 < parts.Length ? parts[bin + 1] : "Debug";
     }
 
     /// <summary>Runs `invite create &lt;email&gt;` through the CLI and returns the activation URL.</summary>

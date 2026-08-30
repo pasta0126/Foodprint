@@ -6,6 +6,7 @@
 **/*.db-*
 **/dp-keys
 openspec
+deploy
 .git
 .github
 *.md

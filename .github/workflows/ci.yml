@@ -1,5 +1,9 @@
 name: CI
 
+# GitHub-hosted runners (ubuntu-latest). Free with unlimited minutes because this
+# repo is public. No deploy here — void-server pulls and redeploys itself
+# (see deploy/ and README "Deploy").
+
 on:
   push:
     branches: [main]
@@ -33,17 +37,12 @@ jobs:
       - name: Test
         run: dotnet test --no-build -c Release --logger "console;verbosity=normal"
 
-  docker-arm64:
+  docker-build:
     runs-on: ubuntu-latest
     needs: build-test
     steps:
       - uses: actions/checkout@v4
-      - uses: docker/setup-qemu-action@v3
-      - uses: docker/setup-buildx-action@v3
-      - name: Build linux/arm64 image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          platforms: linux/arm64
-          push: false
-          tags: foodprint:ci
+      # Native amd64 build — a fast Dockerfile sanity check. void-server does the
+      # real linux/arm64 build at deploy time.
+      - name: Build image
+        run: docker build -t foodprint:ci .

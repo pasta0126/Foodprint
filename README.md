@@ -83,12 +83,20 @@ void-server is a Raspberry Pi (`linux/arm64`, Debian 13) running Docker with a
 reverse proxy already in front. Foodprint is served at
 `foodprint.northernarchive.com`, like the other containers there.
 
-```bash
-# build the arm64 image (on the Pi, or with buildx elsewhere)
-docker buildx build --platform linux/arm64 -t foodprint:latest --load .
+**CI/CD.** GitHub Actions runs CI only (free, public repo). void-server deploys
+itself: `deploy/deploy.sh` runs from cron and redeploys when `main` moves and its
+CI is green. Details and one-time setup in [`deploy/README.md`](deploy/README.md).
 
-# run it (see compose.yaml for the full config)
-docker compose up -d
+Manual deploy:
+
+```bash
+ssh void-server 'cd ~/foodprint && git pull && docker compose up -d --build'
+```
+
+Or from scratch on the Pi:
+
+```bash
+docker compose up -d --build   # builds the linux/arm64 image and runs it
 ```
 
 - Attach the container to the reverse proxy's network and point the proxy at
