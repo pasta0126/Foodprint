@@ -3,6 +3,7 @@ using Foodprint.Core.Data;
 using Foodprint.Web.Auth;
 using Foodprint.Web.Components;
 using Foodprint.Web.Components.Meals;
+using Foodprint.Web.Export;
 using Foodprint.Web.Localization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -112,6 +113,7 @@ app.MapLanguageEndpoints();
 app.MapAuthEndpoints();
 app.MapMealEndpoints();
 app.MapFavoriteEndpoints();
+app.MapExportEndpoints();
 
 // Routes removed in the home/nav merge — keep old bookmarks working.
 app.MapGet("/summary", () => Results.LocalRedirect("/")).RequireAuthorization();

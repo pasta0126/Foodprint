@@ -19,7 +19,6 @@ public sealed class SummaryService(AppDbContext db)
 {
     private const int WindowDays = 7;
     private const int TopTagCount = 5;
-    private const int StreakLookbackDays = 400;
 
     public async Task<WeeklySummary> GetAsync(Guid userId, TimeZoneInfo zone, DateOnly today, CancellationToken ct = default)
     {
@@ -57,20 +56,13 @@ public sealed class SummaryService(AppDbContext db)
 
     private async Task<int> ComputeStreakAsync(Guid userId, TimeZoneInfo zone, DateOnly today, CancellationToken ct)
     {
-        var since = DayRange.For(today.AddDays(-StreakLookbackDays), zone).StartUtc;
+        var since = DayRange.For(today.AddDays(-MealStreak.LookbackDays), zone).StartUtc;
         var times = await db.MealEntries
             .Where(e => e.UserId == userId && e.EatenAt >= since)
             .Select(e => e.EatenAt)
             .ToListAsync(ct);
 
         var daysWithEntries = times.Select(t => DayRange.LocalDate(t, zone)).ToHashSet();
-
-        var streak = 0;
-        for (var day = today; daysWithEntries.Contains(day); day = day.AddDays(-1))
-        {
-            streak++;
-        }
-
-        return streak;
+        return MealStreak.Current(daysWithEntries, today);
     }
 }

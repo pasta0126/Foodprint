@@ -111,6 +111,42 @@
   <data name="Home.Favorites.NoGroup" xml:space="preserve"><value>Sense tipus</value></data>
   <data name="Meal.SaveFavorite" xml:space="preserve"><value>Desa als preferits</value></data>
   <data name="Favorite.Delete" xml:space="preserve"><value>Elimina el preferit</value></data>
+  <data name="Profile.Export" xml:space="preserve"><value>Exporta les dades</value></data>
+  <data name="Profile.Export.Help" xml:space="preserve"><value>Descarrega el teu diari d'àpats entre dues dates com un fitxer Markdown pensat per enganxar-lo a una IA i que l'analitzi.</value></data>
+  <data name="Export.From" xml:space="preserve"><value>Des de</value></data>
+  <data name="Export.To" xml:space="preserve"><value>Fins a</value></data>
+  <data name="Export.Download" xml:space="preserve"><value>Descarrega</value></data>
+  <data name="Export.Md.Title" xml:space="preserve"><value>Diari d'àpats Foodprint</value></data>
+  <data name="Export.Md.Intro" xml:space="preserve"><value>Exportació del diari d'àpats per analitzar-lo amb una IA. Cada àpat és una entrada del diari; les quantitats es mesuren "a ull" amb el plat com a referència (vegeu la llegenda).</value></data>
+  <data name="Export.Md.Generated" xml:space="preserve"><value>Generat</value></data>
+  <data name="Export.Md.TimeZone" xml:space="preserve"><value>Zona horària</value></data>
+  <data name="Export.Md.Language" xml:space="preserve"><value>Idioma</value></data>
+  <data name="Export.Md.Range" xml:space="preserve"><value>Interval</value></data>
+  <data name="Export.Md.RangeOpenStart" xml:space="preserve"><value>primer àpat registrat</value></data>
+  <data name="Export.Md.TotalMeals" xml:space="preserve"><value>Total d'àpats</value></data>
+  <data name="Export.Md.LegendHeading" xml:space="preserve"><value>Llegenda</value></data>
+  <data name="Export.Md.LegendPortionIntro" xml:space="preserve"><value>Mides de ració, respecte a un plat pla estàndard:</value></data>
+  <data name="Export.Md.LegendGramsNote" xml:space="preserve"><value>Una ració també es pot registrar en grams en lloc de per mida.</value></data>
+  <data name="Export.Md.LegendGroupsIntro" xml:space="preserve"><value>Tipus d'àpat:</value></data>
+  <data name="Export.Md.AnalysisHeading" xml:space="preserve"><value>Anàlisi</value></data>
+  <data name="Export.Md.DaysWithEntries" xml:space="preserve"><value>Dies amb registre</value></data>
+  <data name="Export.Md.PerDayHeading" xml:space="preserve"><value>Àpats per dia</value></data>
+  <data name="Export.Md.ByGroupHeading" xml:space="preserve"><value>Per tipus d'àpat</value></data>
+  <data name="Export.Md.TagsHeading" xml:space="preserve"><value>Etiquetes</value></data>
+  <data name="Export.Md.StreakLabel" xml:space="preserve"><value>Ratxa actual (dies seguits, a data d'avui)</value></data>
+  <data name="Export.Md.MissingDaysHeading" xml:space="preserve"><value>Dies sense cap àpat</value></data>
+  <data name="Export.Md.MissingDays.Summary" xml:space="preserve"><value>{0} dies sense cap àpat, entre {1} i {2}.</value></data>
+  <data name="Export.Md.EntriesHeading" xml:space="preserve"><value>Àpats</value></data>
+  <data name="Export.Md.NoEntries" xml:space="preserve"><value>_No hi ha àpats registrats en aquest interval._</value></data>
+  <data name="Export.Md.Col.Date" xml:space="preserve"><value>Data</value></data>
+  <data name="Export.Md.Col.Time" xml:space="preserve"><value>Hora</value></data>
+  <data name="Export.Md.Col.Name" xml:space="preserve"><value>Nom</value></data>
+  <data name="Export.Md.Col.Group" xml:space="preserve"><value>Tipus</value></data>
+  <data name="Export.Md.Col.Portion" xml:space="preserve"><value>Ració</value></data>
+  <data name="Export.Md.Col.Tags" xml:space="preserve"><value>Etiquetes</value></data>
+  <data name="Export.Md.Col.Notes" xml:space="preserve"><value>Notes</value></data>
+  <data name="Export.Md.Col.Count" xml:space="preserve"><value>Nre.</value></data>
+  <data name="Export.Md.NoGroup" xml:space="preserve"><value>(sense tipus)</value></data>
   <data name="Pager.Previous" xml:space="preserve"><value>Anteriors</value></data>
   <data name="Pager.Next" xml:space="preserve"><value>Següents</value></data>
   <data name="Summary.Streak" xml:space="preserve"><value>Ratxa actual</value></data>

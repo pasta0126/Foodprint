@@ -75,6 +75,24 @@
     </script>
 </FpCard>
 
+<FpCard class="fp-mt">
+    <div class="fp-field">
+        <span class="fp-field__label">@L["Profile.Export"]</span>
+        <span class="fp-field__hint">@L["Profile.Export.Help"]</span>
+    </div>
+    <form method="get" action="/profile/export">
+        <div class="fp-field">
+            <label class="fp-field__label" for="export-from">@L["Export.From"]</label>
+            <input type="date" id="export-from" name="from" value="@_exportFrom" class="fp-input" />
+        </div>
+        <div class="fp-field">
+            <label class="fp-field__label" for="export-to">@L["Export.To"]</label>
+            <input type="date" id="export-to" name="to" value="@_exportTo" class="fp-input" />
+        </div>
+        <FpButton Type="submit" Variant="secondary">@L["Export.Download"]</FpButton>
+    </form>
+</FpCard>
+
 <p style="margin-top:var(--fp-space-4)">
     <FpButton Href="/profile/password" Variant="secondary">@L["Profile.ChangePassword"]</FpButton>
 </p>
@@ -92,9 +110,16 @@
 
     private string? _message;
     private bool _ok;
+    private string _exportFrom = "";
+    private string _exportTo = "";
 
     protected override async Task OnInitializedAsync()
     {
+        var zone = ProfileService.ResolveZone(Me.TimeZoneId);
+        var today = DateOnly.FromDateTime(TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, zone));
+        _exportTo = today.ToString("yyyy-MM-dd");
+        _exportFrom = today.AddDays(-30).ToString("yyyy-MM-dd");
+
         if (HttpContext.Request.Method == "GET")
         {
             var view = await Profiles.GetAsync(Me.Id, HttpContext.RequestAborted);

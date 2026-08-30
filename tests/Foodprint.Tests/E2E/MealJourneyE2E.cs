@@ -104,7 +104,18 @@ public sealed class MealJourneyE2E(AppServerFixture app) : IAsyncLifetime
         await page.ClickAsync("main button[type=submit]");
         await page.WaitForURLAsync(app.BaseUrl + "/");
 
-        // 10. Delete an entry via the confirmation dialog.
+        // 10. Export the meal log from the profile page.
+        await page.GotoAsync("/profile");
+        await Assertions.Expect(page.Locator("#export-from")).ToBeVisibleAsync();
+        var export = await page.APIRequest.GetAsync(app.BaseUrl + "/profile/export?from=2020-01-01");
+        Assert.Equal(200, export.Status);
+        Assert.Contains("text/markdown", export.Headers["content-type"]);
+        Assert.Contains("attachment", export.Headers["content-disposition"]);
+        var exportBody = await export.TextAsync();
+        Assert.Contains("Foodprint meal log", exportBody);
+        Assert.Contains("Greek yogurt with honey", exportBody);
+
+        // 11. Delete an entry via the confirmation dialog.
         await page.GotoAsync("/history");
         await page.GetByRole(AriaRole.Link, new() { Name = "Edit" }).First.ClickAsync();
         await page.GetByRole(AriaRole.Link, new() { Name = "Delete" }).ClickAsync();

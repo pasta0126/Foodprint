@@ -111,6 +111,42 @@
   <data name="Home.Favorites.NoGroup" xml:space="preserve"><value>No group</value></data>
   <data name="Meal.SaveFavorite" xml:space="preserve"><value>Save to favorites</value></data>
   <data name="Favorite.Delete" xml:space="preserve"><value>Delete favorite</value></data>
+  <data name="Profile.Export" xml:space="preserve"><value>Export data</value></data>
+  <data name="Profile.Export.Help" xml:space="preserve"><value>Download your meal log between two dates as a Markdown file made to paste into an AI for analysis.</value></data>
+  <data name="Export.From" xml:space="preserve"><value>From</value></data>
+  <data name="Export.To" xml:space="preserve"><value>To</value></data>
+  <data name="Export.Download" xml:space="preserve"><value>Download</value></data>
+  <data name="Export.Md.Title" xml:space="preserve"><value>Foodprint meal log</value></data>
+  <data name="Export.Md.Intro" xml:space="preserve"><value>Meal diary export for analysis by an AI. Each meal is a diary entry; amounts are eyeballed against a plate (see the legend).</value></data>
+  <data name="Export.Md.Generated" xml:space="preserve"><value>Generated</value></data>
+  <data name="Export.Md.TimeZone" xml:space="preserve"><value>Time zone</value></data>
+  <data name="Export.Md.Language" xml:space="preserve"><value>Language</value></data>
+  <data name="Export.Md.Range" xml:space="preserve"><value>Range</value></data>
+  <data name="Export.Md.RangeOpenStart" xml:space="preserve"><value>first logged meal</value></data>
+  <data name="Export.Md.TotalMeals" xml:space="preserve"><value>Total meals</value></data>
+  <data name="Export.Md.LegendHeading" xml:space="preserve"><value>Legend</value></data>
+  <data name="Export.Md.LegendPortionIntro" xml:space="preserve"><value>Portion sizes, against a standard flat plate:</value></data>
+  <data name="Export.Md.LegendGramsNote" xml:space="preserve"><value>A portion may instead be recorded in grams rather than by size.</value></data>
+  <data name="Export.Md.LegendGroupsIntro" xml:space="preserve"><value>Meal groups:</value></data>
+  <data name="Export.Md.AnalysisHeading" xml:space="preserve"><value>Analysis</value></data>
+  <data name="Export.Md.DaysWithEntries" xml:space="preserve"><value>Days with entries</value></data>
+  <data name="Export.Md.PerDayHeading" xml:space="preserve"><value>Meals per day</value></data>
+  <data name="Export.Md.ByGroupHeading" xml:space="preserve"><value>By meal group</value></data>
+  <data name="Export.Md.TagsHeading" xml:space="preserve"><value>Tags</value></data>
+  <data name="Export.Md.StreakLabel" xml:space="preserve"><value>Current streak (consecutive days, as of today)</value></data>
+  <data name="Export.Md.MissingDaysHeading" xml:space="preserve"><value>Days with no meal</value></data>
+  <data name="Export.Md.MissingDays.Summary" xml:space="preserve"><value>{0} days with no meal, between {1} and {2}.</value></data>
+  <data name="Export.Md.EntriesHeading" xml:space="preserve"><value>Meals</value></data>
+  <data name="Export.Md.NoEntries" xml:space="preserve"><value>_No meals logged in this range._</value></data>
+  <data name="Export.Md.Col.Date" xml:space="preserve"><value>Date</value></data>
+  <data name="Export.Md.Col.Time" xml:space="preserve"><value>Time</value></data>
+  <data name="Export.Md.Col.Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Export.Md.Col.Group" xml:space="preserve"><value>Group</value></data>
+  <data name="Export.Md.Col.Portion" xml:space="preserve"><value>Portion</value></data>
+  <data name="Export.Md.Col.Tags" xml:space="preserve"><value>Tags</value></data>
+  <data name="Export.Md.Col.Notes" xml:space="preserve"><value>Notes</value></data>
+  <data name="Export.Md.Col.Count" xml:space="preserve"><value>Count</value></data>
+  <data name="Export.Md.NoGroup" xml:space="preserve"><value>(no group)</value></data>
   <data name="Pager.Previous" xml:space="preserve"><value>Newer</value></data>
   <data name="Pager.Next" xml:space="preserve"><value>Older</value></data>
   <data name="Summary.Streak" xml:space="preserve"><value>Current streak</value></data>

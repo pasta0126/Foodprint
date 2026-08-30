@@ -111,6 +111,42 @@
   <data name="Home.Favorites.NoGroup" xml:space="preserve"><value>Sin tipo</value></data>
   <data name="Meal.SaveFavorite" xml:space="preserve"><value>Guardar en favoritos</value></data>
   <data name="Favorite.Delete" xml:space="preserve"><value>Eliminar favorito</value></data>
+  <data name="Profile.Export" xml:space="preserve"><value>Exportar datos</value></data>
+  <data name="Profile.Export.Help" xml:space="preserve"><value>Descarga tu diario de comidas entre dos fechas como un fichero Markdown pensado para pegarlo en una IA y que lo analice.</value></data>
+  <data name="Export.From" xml:space="preserve"><value>Desde</value></data>
+  <data name="Export.To" xml:space="preserve"><value>Hasta</value></data>
+  <data name="Export.Download" xml:space="preserve"><value>Descargar</value></data>
+  <data name="Export.Md.Title" xml:space="preserve"><value>Diario de comidas Foodprint</value></data>
+  <data name="Export.Md.Intro" xml:space="preserve"><value>Exportación del diario de comidas para su análisis por una IA. Cada comida es una entrada del diario; las cantidades se miden "a ojo" con el plato como referencia (ver la leyenda).</value></data>
+  <data name="Export.Md.Generated" xml:space="preserve"><value>Generado</value></data>
+  <data name="Export.Md.TimeZone" xml:space="preserve"><value>Zona horaria</value></data>
+  <data name="Export.Md.Language" xml:space="preserve"><value>Idioma</value></data>
+  <data name="Export.Md.Range" xml:space="preserve"><value>Rango</value></data>
+  <data name="Export.Md.RangeOpenStart" xml:space="preserve"><value>primera comida registrada</value></data>
+  <data name="Export.Md.TotalMeals" xml:space="preserve"><value>Total de comidas</value></data>
+  <data name="Export.Md.LegendHeading" xml:space="preserve"><value>Leyenda</value></data>
+  <data name="Export.Md.LegendPortionIntro" xml:space="preserve"><value>Tamaños de ración, respecto a un plato llano estándar:</value></data>
+  <data name="Export.Md.LegendGramsNote" xml:space="preserve"><value>Una ración también puede registrarse en gramos en lugar de por tamaño.</value></data>
+  <data name="Export.Md.LegendGroupsIntro" xml:space="preserve"><value>Tipos de comida:</value></data>
+  <data name="Export.Md.AnalysisHeading" xml:space="preserve"><value>Análisis</value></data>
+  <data name="Export.Md.DaysWithEntries" xml:space="preserve"><value>Días con registro</value></data>
+  <data name="Export.Md.PerDayHeading" xml:space="preserve"><value>Comidas por día</value></data>
+  <data name="Export.Md.ByGroupHeading" xml:space="preserve"><value>Por tipo de comida</value></data>
+  <data name="Export.Md.TagsHeading" xml:space="preserve"><value>Etiquetas</value></data>
+  <data name="Export.Md.StreakLabel" xml:space="preserve"><value>Racha actual (días seguidos, a fecha de hoy)</value></data>
+  <data name="Export.Md.MissingDaysHeading" xml:space="preserve"><value>Días sin ninguna comida</value></data>
+  <data name="Export.Md.MissingDays.Summary" xml:space="preserve"><value>{0} días sin ninguna comida, entre {1} y {2}.</value></data>
+  <data name="Export.Md.EntriesHeading" xml:space="preserve"><value>Comidas</value></data>
+  <data name="Export.Md.NoEntries" xml:space="preserve"><value>_No hay comidas registradas en este rango._</value></data>
+  <data name="Export.Md.Col.Date" xml:space="preserve"><value>Fecha</value></data>
+  <data name="Export.Md.Col.Time" xml:space="preserve"><value>Hora</value></data>
+  <data name="Export.Md.Col.Name" xml:space="preserve"><value>Nombre</value></data>
+  <data name="Export.Md.Col.Group" xml:space="preserve"><value>Tipo</value></data>
+  <data name="Export.Md.Col.Portion" xml:space="preserve"><value>Ración</value></data>
+  <data name="Export.Md.Col.Tags" xml:space="preserve"><value>Etiquetas</value></data>
+  <data name="Export.Md.Col.Notes" xml:space="preserve"><value>Notas</value></data>
+  <data name="Export.Md.Col.Count" xml:space="preserve"><value>Nº</value></data>
+  <data name="Export.Md.NoGroup" xml:space="preserve"><value>(sin tipo)</value></data>
   <data name="Pager.Previous" xml:space="preserve"><value>Anteriores</value></data>
   <data name="Pager.Next" xml:space="preserve"><value>Siguientes</value></data>
   <data name="Summary.Streak" xml:space="preserve"><value>Racha actual</value></data>

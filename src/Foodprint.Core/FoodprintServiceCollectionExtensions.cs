@@ -33,6 +33,7 @@ public static class FoodprintServiceCollectionExtensions
         services.AddScoped<MealFavoriteService>();
         services.AddScoped<DiaryService>();
         services.AddScoped<SummaryService>();
+        services.AddScoped<Export.MealExportService>();
 
         return services;
     }
