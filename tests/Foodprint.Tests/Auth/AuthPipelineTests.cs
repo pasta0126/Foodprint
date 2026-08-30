@@ -3,7 +3,8 @@ using Foodprint.Tests.Infrastructure;
 
 namespace Foodprint.Tests.Auth;
 
-public class AuthPipelineTests(FoodprintWebFactory factory) : IClassFixture<FoodprintWebFactory>
+[Collection(nameof(WebPipelineCollection))]
+public class AuthPipelineTests(FoodprintWebFactory factory)
 {
     [Fact]
     public async Task Unauthenticated_page_request_redirects_to_sign_in()

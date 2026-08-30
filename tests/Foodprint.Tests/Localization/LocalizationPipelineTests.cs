@@ -2,7 +2,8 @@ using Foodprint.Tests.Infrastructure;
 
 namespace Foodprint.Tests.Localization;
 
-public class LocalizationPipelineTests(FoodprintWebFactory factory) : IClassFixture<FoodprintWebFactory>
+[Collection(nameof(WebPipelineCollection))]
+public class LocalizationPipelineTests(FoodprintWebFactory factory)
 {
     [Theory]
     [InlineData("ca", "ca")]

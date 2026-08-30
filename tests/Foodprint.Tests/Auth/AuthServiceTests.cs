@@ -91,6 +91,24 @@ public class AuthServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task Admin_bootstrap_is_idempotent_and_concurrency_safe()
+    {
+        var options = _db.Options(o => o.AdminEmail = "admin@example.com");
+        AdminBootstrapper Boot() => new(_db.NewContext(), Registration(), _db.Clock, options);
+
+        // Two instances racing against the same database (each its own DbContext).
+        var links = await Task.WhenAll(Boot().EnsureAsync(), Boot().EnsureAsync());
+        Assert.All(links, l => Assert.NotNull(l));
+
+        // A later run once activated returns no link and leaves a single admin.
+        await Registration().ActivateAsync(links[0]!, "Owner", "correcthorse9", "es");
+        Assert.Null(await Boot().EnsureAsync());
+
+        await using var db = _db.NewContext();
+        Assert.Single(db.Users.Where(u => u.Email == "admin@example.com"));
+    }
+
+    [Fact]
     public async Task Admin_bootstrap_creates_a_profile_and_activation_yields_a_resolvable_session()
     {
         var options = _db.Options(o => o.AdminEmail = "admin@example.com");
