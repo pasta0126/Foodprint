@@ -7,46 +7,64 @@ scrollable history of past days.
 
 ## Requirements
 
-### Requirement: Day view
-
-The system SHALL provide a view of all entries for a single calendar day in the
-user's profile time zone (see `user-profile`), ordered by eaten-at time ascending. The view SHALL default
-to today and SHALL allow moving to the previous or next day. Each entry SHALL show
-its name, time, portion, tags, and a notes indicator.
-
-#### Scenario: Today with entries
-
-- **WHEN** the user opens the diary home and has logged 3 entries today
-- **THEN** all 3 are listed in time order with their fields
-
-#### Scenario: Empty day
-
-- **WHEN** the user navigates to a day with no entries
-- **THEN** the view shows an empty state with a prompt to add an entry
-
-#### Scenario: Day navigation
-
-- **WHEN** the user activates "previous day"
-- **THEN** the view shows the prior calendar day's entries and updates the visible date
-
 ### Requirement: History view
 
-The system SHALL provide a reverse-chronological list of days that have at least
-one entry, each day showing its date, entry count, and a preview of entry names.
-The list SHALL be paginated at 20 days per page.
+The system SHALL provide a reverse-chronological view of the days that have at
+least one entry. Each day SHALL be rendered as a section showing its date and all
+of that day's entries in full (name, time, portion, tags, notes indicator),
+ordered by eaten-at time ascending, in the user's profile time zone. The list
+SHALL be paginated at 20 days per page. There SHALL NOT be a separate per-day
+page.
 
 #### Scenario: Browsing history
 
 - **WHEN** the user opens the history view with entries spanning 45 days
-- **THEN** the first page shows the 20 most recent days with entries
+- **THEN** the first page shows the 20 most recent days with entries, each expanded to its entries
 - **AND** a control loads the next page
+
+#### Scenario: Entries within a day
+
+- **WHEN** a day in the list has three entries
+- **THEN** all three are shown under that day's date in time order
 
 #### Scenario: Jump to a day
 
-- **WHEN** the user selects a day in the history list
-- **THEN** the day view opens for that date
+- **WHEN** the user wants to see a specific day's entries
+- **THEN** they find that day's section in the history list; there is no separate day page to open
 
 #### Scenario: No history
 
 - **WHEN** the user has never logged an entry
 - **THEN** the history view shows an empty state
+
+### Requirement: Home view
+
+The system SHALL present a single home view at the app root that combines three
+regions, laid out as a dashboard (side by side on wide viewports, stacked on
+narrow ones):
+
+- the seven-day summary (see `weekly-summary`) — streak, per-day counts and top
+  tags;
+- the meal-entry form (see `meal-logging`), so a new entry can be logged without
+  leaving the page; and
+- the meal-favorite quick-add cards (see `meal-favorites`), shown only when the
+  user has favorites.
+
+The home view SHALL NOT provide single-day browsing or previous/next-day
+navigation. Submitting the form SHALL create the entry and return the user to the
+home view.
+
+#### Scenario: Home combines summary, form and favorites
+
+- **WHEN** a signed-in user with favorites opens the app root
+- **THEN** the seven-day summary, the entry form and the favorite cards are all present on the one page
+
+#### Scenario: Logging from the home
+
+- **WHEN** the user fills the home entry form and submits a valid entry
+- **THEN** the entry is saved and the home view re-renders showing the updated summary
+
+#### Scenario: No day navigation
+
+- **WHEN** the user is on the home view
+- **THEN** there is no control to move to a previous or next single day
