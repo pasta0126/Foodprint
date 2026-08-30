@@ -2,23 +2,25 @@
 
 ### Requirement: Home view
 
-The system SHALL present a single home view at the app root that combines, in
-this order:
+The system SHALL present a single home view at the app root that combines three
+regions, laid out as a dashboard (side by side on wide viewports, stacked on
+narrow ones):
 
-1. a quick-add block — the meal-favorite cards (see `meal-favorites`) followed by
-   the meal-entry form (see `meal-logging`), so a new entry can be logged without
-   leaving the page; and
-2. the seven-day summary (see `weekly-summary`) — streak, per-day counts and top
-   tags.
+- the seven-day summary (see `weekly-summary`) — streak, per-day counts and top
+  tags;
+- the meal-entry form (see `meal-logging`), so a new entry can be logged without
+  leaving the page; and
+- the meal-favorite quick-add cards (see `meal-favorites`), shown only when the
+  user has favorites.
 
 The home view SHALL NOT provide single-day browsing or previous/next-day
 navigation. Submitting the form SHALL create the entry and return the user to the
 home view.
 
-#### Scenario: Home shows quick-add above the summary
+#### Scenario: Home combines summary, form and favorites
 
-- **WHEN** a signed-in user opens the app root
-- **THEN** the favorite cards and the entry form appear above the seven-day summary
+- **WHEN** a signed-in user with favorites opens the app root
+- **THEN** the seven-day summary, the entry form and the favorite cards are all present on the one page
 
 #### Scenario: Logging from the home
 

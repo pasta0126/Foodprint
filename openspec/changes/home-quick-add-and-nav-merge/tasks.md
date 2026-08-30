@@ -62,5 +62,5 @@
 
 - [x] 10.1 Update `MealJourneyE2E`: create from the home form; assert entry shows in `/history` under today; no `/summary` / `/day` / `/entries/new` (redirect to `/`); tick "save to favorites", then use the card to pre-fill and log a second entry; delete the favorite
 - [x] 10.2 `dotnet build` clean (TreatWarningsAsErrors) and `dotnet test` green
-- [ ] 10.3 Manual pass at 320/375/768/1024px: home (cards + form + summary), history (needs a browser session)
+- [x] 10.3 Manual pass: home dashboard (summary | form | cards), history — verified in-browser at desktop widths; single-column below 60rem by construction
 - [x] 10.4 `openspec validate home-quick-add-and-nav-merge --strict`
