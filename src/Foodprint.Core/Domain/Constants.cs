@@ -5,8 +5,9 @@ public static class PortionSizes
     public const string Small = "small";
     public const string Medium = "medium";
     public const string Large = "large";
+    public const string VeryLarge = "very-large";
 
-    public static readonly IReadOnlyList<string> All = new[] { Small, Medium, Large };
+    public static readonly IReadOnlyList<string> All = new[] { Small, Medium, Large, VeryLarge };
 
     public static bool IsValid(string? value) => value is not null && All.Contains(value);
 }

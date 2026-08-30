@@ -3,8 +3,6 @@ using Foodprint.Core.Meals;
 
 namespace Foodprint.Web.Components.Meals;
 
-public enum PortionMode { None, Size, Grams }
-
 /// <summary>Form-bound shape of a meal entry. Times are in the user's profile time zone.</summary>
 public sealed class MealEntryFormModel
 {
@@ -14,9 +12,8 @@ public sealed class MealEntryFormModel
     [Required]
     public DateTime EatenAtLocal { get; set; }
 
-    public PortionMode PortionMode { get; set; } = PortionMode.None;
-
-    public string? PortionSize { get; set; }
+    /// <summary>Empty string = no named size; otherwise one of <see cref="Foodprint.Core.Domain.PortionSizes"/>.</summary>
+    public string PortionChoice { get; set; } = "";
 
     [Range(Foodprint.Core.Domain.PortionGrams.Min, Foodprint.Core.Domain.PortionGrams.Max)]
     public int? PortionGrams { get; set; }
@@ -36,8 +33,9 @@ public sealed class MealEntryFormModel
     {
         Name = Name,
         EatenAtUtc = TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(EatenAtLocal, DateTimeKind.Unspecified), zone),
-        PortionSize = PortionMode == PortionMode.Size ? PortionSize : null,
-        PortionGrams = PortionMode == PortionMode.Grams ? PortionGrams : null,
+        // Grams (from the disclosure) wins; otherwise the named size. Never both.
+        PortionGrams = PortionGrams,
+        PortionSize = PortionGrams is null && !string.IsNullOrEmpty(PortionChoice) ? PortionChoice : null,
         MealGroupId = MealGroupId,
         Notes = Notes,
         Tags = ParseTags(),
@@ -47,10 +45,7 @@ public sealed class MealEntryFormModel
     {
         Name = v.Name,
         EatenAtLocal = TimeZoneInfo.ConvertTimeFromUtc(v.EatenAtUtc, zone),
-        PortionMode = v.PortionSize is not null ? PortionMode.Size
-            : v.PortionGrams is not null ? PortionMode.Grams
-            : PortionMode.None,
-        PortionSize = v.PortionSize,
+        PortionChoice = v.PortionSize ?? "",
         PortionGrams = v.PortionGrams,
         MealGroupId = v.MealGroupId,
         Notes = v.Notes,

@@ -11,11 +11,17 @@
         <div class="fp-entry__meta">
             @if (Entry.MealGroupKey is not null)
             {
-                <span class="fp-chip">@L[$"MealGroup.{Entry.MealGroupKey}"]</span>
+                <span class="fp-chip"><Icon Name="@($"group-{Entry.MealGroupKey}")" Size="14" /> @L[$"MealGroup.{Entry.MealGroupKey}"]</span>
             }
-            @if (Portion is not null)
+            @if (Entry.PortionSize is { } size)
             {
-                <span class="fp-chip">@Portion</span>
+                <span class="fp-chip" title="@L[$"Meal.Size.{size}.Desc"]">
+                    <Icon Name="@($"plate-{size}")" Size="14" /> @L[$"Meal.Size.{size}"]
+                </span>
+            }
+            else if (Entry.PortionGrams is { } grams)
+            {
+                <span class="fp-chip">@LocalFormats.Grams(grams)</span>
             }
             @foreach (var tag in Entry.Tags)
             {
@@ -27,7 +33,7 @@
             }
         </div>
     </div>
-    <a class="fp-btn fp-btn--ghost" href="@($"/entries/{Entry.Id}/edit")">@L["Common.Edit"]</a>
+    <a class="fp-btn fp-btn--ghost" href="@($"/entries/{Entry.Id}/edit")"><Icon Name="edit" /> @L["Common.Edit"]</a>
 </article>
 
 @code {
@@ -35,8 +41,4 @@
     [Parameter, EditorRequired] public TimeZoneInfo Zone { get; set; } = TimeZoneInfo.Utc;
 
     private DateTime LocalTime => TimeZoneInfo.ConvertTimeFromUtc(Entry.EatenAtUtc, Zone);
-
-    private string? Portion => Entry.PortionSize is { } s
-        ? L[$"Meal.Size.{s}"]
-        : Entry.PortionGrams is { } g ? LocalFormats.Grams(g) : null;
 }

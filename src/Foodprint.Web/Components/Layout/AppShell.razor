@@ -12,19 +12,12 @@
         <label for="fp-nav-toggle" class="fp-btn fp-btn--ghost fp-shell__nav-toggle" aria-label="@L["Nav.Toggle"]">☰</label>
 
         <nav class="fp-shell__nav" aria-label="Primary">
-            <NavLink href="/" Match="NavLinkMatch.All">@L["Nav.Today"]</NavLink>
-            <NavLink href="/history">@L["Nav.History"]</NavLink>
-            <NavLink href="/summary">@L["Nav.Weekly"]</NavLink>
-            <NavLink href="/profile">@L["Nav.Profile"]</NavLink>
+            <NavLink href="/" Match="NavLinkMatch.All"><Icon Name="today" /> @L["Nav.Today"]</NavLink>
+            <NavLink href="/history"><Icon Name="history" /> @L["Nav.History"]</NavLink>
+            <NavLink href="/summary"><Icon Name="summary" /> @L["Nav.Weekly"]</NavLink>
         </nav>
 
-        <div class="fp-shell__tools">
-            <LanguageSwitcher />
-            <ThemeToggle />
-            <form method="post" action="/auth/sign-out" style="margin:0">
-                <button type="submit" class="fp-btn fp-btn--ghost">@L["Nav.SignOut"]</button>
-            </form>
-        </div>
+        <IdentityMenu />
     </header>
 
     <main class="fp-shell__main">

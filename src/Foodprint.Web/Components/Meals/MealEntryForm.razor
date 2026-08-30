@@ -26,25 +26,37 @@
         <InputDate id="eaten" Type="InputDateType.DateTimeLocal" class="fp-input" @bind-Value="Model.EatenAtLocal" />
     </div>
 
-    <fieldset class="fp-field" style="border:0;padding:0;margin:0">
+    <fieldset class="fp-portion">
         <legend class="fp-field__label">@L["Meal.Portion"]</legend>
-        <InputRadioGroup @bind-Value="Model.PortionMode">
-            <label><InputRadio Value="PortionMode.None" /> @L["Meal.Portion.None"]</label>
-            <label><InputRadio Value="PortionMode.Size" /> @L["Meal.Portion.Size"]</label>
-            <label><InputRadio Value="PortionMode.Grams" /> @L["Meal.Portion.Grams"]</label>
-        </InputRadioGroup>
-
-        <div style="display:flex;gap:var(--fp-space-2);margin-top:var(--fp-space-2)">
-            <InputSelect id="portion-size" class="fp-select" @bind-Value="Model.PortionSize">
-                <option value="">@L["Meal.Size.Placeholder"]</option>
+        <InputRadioGroup @bind-Value="Model.PortionChoice">
+            <div class="fp-portion__opts">
+                <label class="fp-portion__opt">
+                    <InputRadio Value="@_none" />
+                    <span class="fp-portion__text">
+                        <span class="fp-portion__label">@L["Meal.Portion.None"]</span>
+                    </span>
+                </label>
                 @foreach (var size in PortionSizes.All)
                 {
-                    <option value="@size">@L[$"Meal.Size.{size}"]</option>
+                    <label class="fp-portion__opt">
+                        <InputRadio Value="size" />
+                        <Icon Name="@($"plate-{size}")" />
+                        <span class="fp-portion__text">
+                            <span class="fp-portion__label">@L[$"Meal.Size.{size}"]</span>
+                            <span class="fp-portion__desc">@L[$"Meal.Size.{size}.Desc"]</span>
+                        </span>
+                    </label>
                 }
-            </InputSelect>
-            <InputNumber id="portion-grams" class="fp-input" @bind-Value="Model.PortionGrams" placeholder="g" />
-        </div>
-        <ValidationMessage For="() => Model.PortionGrams" />
+            </div>
+        </InputRadioGroup>
+
+        <details class="fp-portion__grams" open="@(Model.PortionGrams is not null)">
+            <summary>@L["Meal.Portion.Grams.Toggle"]</summary>
+            <div>
+                <InputNumber id="portion-grams" class="fp-input" @bind-Value="Model.PortionGrams" placeholder="g" />
+                <ValidationMessage For="() => Model.PortionGrams" />
+            </div>
+        </details>
     </fieldset>
 
     <div class="fp-field">
@@ -80,6 +92,7 @@
     [Parameter] public string SubmitText { get; set; } = "Save";
     [Parameter] public string? ErrorText { get; set; }
 
+    private readonly string _none = "";
     private IReadOnlyList<MealGroupOption> _groups = [];
 
     protected override async Task OnInitializedAsync() => _groups = await Groups.ActiveAsync();

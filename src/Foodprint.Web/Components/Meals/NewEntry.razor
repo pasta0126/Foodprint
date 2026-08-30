@@ -4,6 +4,7 @@
 @using Foodprint.Web.Auth
 @using Foodprint.Web.Resources
 @inject MealEntryService Entries
+@inject MealGroupService Groups
 @inject CurrentUser Me
 @inject NavigationManager Nav
 @inject IStringLocalizer<SharedResource> L
@@ -24,7 +25,7 @@
     private TimeZoneInfo _zone = TimeZoneInfo.Utc;
     private string? _error;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         _zone = ProfileService.ResolveZone(Me.TimeZoneId);
         if (Model.Name.Length == 0 && Model.EatenAtLocal == default)
@@ -33,6 +34,10 @@
             Model.EatenAtLocal = DateOnly.TryParseExact(Date, "yyyy-MM-dd", out var d)
                 ? d.ToDateTime(new TimeOnly(localNow.Hour, localNow.Minute))
                 : new DateTime(localNow.Year, localNow.Month, localNow.Day, localNow.Hour, localNow.Minute, 0);
+
+            // Pre-select the meal group that fits this time of day (overridable).
+            var active = await Groups.ActiveAsync(HttpContext.RequestAborted);
+            Model.MealGroupId = MealGroupSuggestion.ForLocalTime(TimeOnly.FromDateTime(Model.EatenAtLocal), active);
         }
     }
 

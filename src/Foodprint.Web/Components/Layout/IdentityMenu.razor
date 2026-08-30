@@ -1,0 +1,31 @@
+@namespace Foodprint.Web.Components.Layout
+@using Foodprint.Web.Auth
+@using Foodprint.Web.Components.Shared
+@using Foodprint.Web.Resources
+@inject CurrentUser Me
+@inject IStringLocalizer<SharedResource> L
+
+@* Static-SSR identity control: a native <details> disclosure, keyboard-operable,
+   no interactive circuit. Summary = avatar + name; panel = profile + sign out. *@
+<details class="fp-identity">
+    <summary class="fp-identity__trigger" aria-label="@L["Nav.Account"]">
+        <span class="fp-avatar" style="background:@Color" aria-hidden="true">@Initial</span>
+        <span class="fp-identity__name">@Label</span>
+    </summary>
+    <div class="fp-identity__menu" role="menu">
+        <a class="fp-identity__item" role="menuitem" href="/profile">
+            <Icon Name="user" /> @L["Nav.Profile"]
+        </a>
+        <form class="fp-identity__item" method="post" action="/auth/sign-out" role="none">
+            <button type="submit" role="menuitem">
+                <Icon Name="signout" /> @L["Nav.SignOut"]
+            </button>
+        </form>
+    </div>
+</details>
+
+@code {
+    private string Label => string.IsNullOrWhiteSpace(Me.DisplayName) ? Me.Email : Me.DisplayName;
+    private string Color => AvatarIdentity.Color(Me.IdOrNull?.ToString() ?? Me.Email);
+    private string Initial => AvatarIdentity.Initial(Me.DisplayName, Me.Email);
+}

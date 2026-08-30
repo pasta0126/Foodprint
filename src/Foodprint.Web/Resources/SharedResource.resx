@@ -18,6 +18,7 @@
   <data name="Nav.Weekly" xml:space="preserve"><value>Semana</value></data>
   <data name="Nav.Profile" xml:space="preserve"><value>Perfil</value></data>
   <data name="Nav.SignOut" xml:space="preserve"><value>Cerrar sesión</value></data>
+  <data name="Nav.Account" xml:space="preserve"><value>Tu cuenta</value></data>
   <data name="Nav.Toggle" xml:space="preserve"><value>Mostrar u ocultar la navegación</value></data>
   <data name="Theme.Label" xml:space="preserve"><value>Tema: {0}. Actívalo para cambiarlo.</value></data>
   <data name="Theme.System" xml:space="preserve"><value>sistema</value></data>
@@ -61,6 +62,8 @@
   <data name="Profile.Saved" xml:space="preserve"><value>Cambios guardados.</value></data>
   <data name="Profile.TimeZone.Invalid" xml:space="preserve"><value>Zona horaria no reconocida.</value></data>
   <data name="Profile.ChangePassword" xml:space="preserve"><value>Cambiar contraseña</value></data>
+  <data name="Profile.Theme" xml:space="preserve"><value>Tema</value></data>
+  <data name="Profile.SignOut" xml:space="preserve"><value>Cerrar sesión</value></data>
   <data name="Profile.CurrentPassword" xml:space="preserve"><value>Contraseña actual</value></data>
   <data name="Profile.Password.Wrong" xml:space="preserve"><value>La contraseña actual no es correcta.</value></data>
   <data name="Profile.Password.Changed" xml:space="preserve"><value>Contraseña actualizada. Se han cerrado tus otras sesiones.</value></data>
@@ -70,9 +73,15 @@
   <data name="Meal.Portion.None" xml:space="preserve"><value>Sin indicar</value></data>
   <data name="Meal.Portion.Size" xml:space="preserve"><value>Tamaño</value></data>
   <data name="Meal.Portion.Grams" xml:space="preserve"><value>Gramos</value></data>
+  <data name="Meal.Portion.Grams.Toggle" xml:space="preserve"><value>Prefiero indicar los gramos exactos</value></data>
   <data name="Meal.Size.small" xml:space="preserve"><value>Pequeña</value></data>
   <data name="Meal.Size.medium" xml:space="preserve"><value>Mediana</value></data>
   <data name="Meal.Size.large" xml:space="preserve"><value>Grande</value></data>
+  <data name="Meal.Size.very-large" xml:space="preserve"><value>Muy grande</value></data>
+  <data name="Meal.Size.small.Desc" xml:space="preserve"><value>Un tercio del plato o un bol pequeño</value></data>
+  <data name="Meal.Size.medium.Desc" xml:space="preserve"><value>Entre un tercio y dos tercios del plato</value></data>
+  <data name="Meal.Size.large.Desc" xml:space="preserve"><value>El plato lleno</value></data>
+  <data name="Meal.Size.very-large.Desc" xml:space="preserve"><value>Un plato bien lleno o un plato grande</value></data>
   <data name="Meal.Group" xml:space="preserve"><value>Tipo de comida</value></data>
   <data name="Meal.Tags" xml:space="preserve"><value>Etiquetas</value></data>
   <data name="Meal.Tags.Hint" xml:space="preserve"><value>Separadas por comas.</value></data>

@@ -4,7 +4,7 @@ window.fpDialog = {
     close: function (el) { if (el && el.open) el.close(); }
 };
 
-// Runtime theme helpers used by the interactive ThemeToggle component.
+// Runtime theme helpers used by the theme control on the profile page.
 window.fpTheme = {
     get: function () {
         try { return localStorage.getItem("fp-theme") || "system"; }

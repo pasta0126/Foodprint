@@ -98,6 +98,23 @@ public class MealEntryServiceTests : IDisposable
         Assert.True((await Entries().CreateAsync(user, okG)).Ok);
     }
 
+    [Theory]
+    [InlineData("small")]
+    [InlineData("medium")]
+    [InlineData("large")]
+    [InlineData("very-large")]
+    public async Task Named_portion_sizes_are_all_accepted(string size)
+    {
+        var user = await NewUser($"size-{size}@example.com");
+        var input = Valid(); input.PortionSize = size;
+
+        var result = await Entries().CreateAsync(user, input);
+
+        Assert.True(result.Ok);
+        var view = await Entries().GetAsync(user, result.EntryId);
+        Assert.Equal(size, view!.PortionSize);
+    }
+
     [Fact]
     public async Task Tags_are_normalized_deduped_and_capped()
     {

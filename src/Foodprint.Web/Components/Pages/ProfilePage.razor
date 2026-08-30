@@ -52,9 +52,36 @@
     </EditForm>
 </FpCard>
 
+<FpCard class="fp-mt">
+    <div class="fp-field">
+        <span class="fp-field__label">@L["Profile.Theme"]</span>
+        <div class="fp-theme" id="fp-theme-control" role="group" aria-label="@L["Profile.Theme"]">
+            <button type="button" class="fp-btn fp-btn--secondary" data-theme-choice="system"
+                    onclick="fpTheme.set('system');fpThemeSync()">@L["Theme.System"]</button>
+            <button type="button" class="fp-btn fp-btn--secondary" data-theme-choice="light"
+                    onclick="fpTheme.set('light');fpThemeSync()">@L["Theme.Light"]</button>
+            <button type="button" class="fp-btn fp-btn--secondary" data-theme-choice="dark"
+                    onclick="fpTheme.set('dark');fpThemeSync()">@L["Theme.Dark"]</button>
+        </div>
+    </div>
+    <script>
+        function fpThemeSync() {
+            var m = (window.fpTheme && fpTheme.get()) || "system";
+            document.querySelectorAll('#fp-theme-control [data-theme-choice]').forEach(function (b) {
+                b.setAttribute('aria-pressed', String(b.dataset.themeChoice === m));
+            });
+        }
+        fpThemeSync();
+    </script>
+</FpCard>
+
 <p style="margin-top:var(--fp-space-4)">
     <FpButton Href="/profile/password" Variant="secondary">@L["Profile.ChangePassword"]</FpButton>
 </p>
+
+<form method="post" action="/auth/sign-out" style="margin-top:var(--fp-space-4)">
+    <FpButton Type="submit" Variant="secondary">@L["Profile.SignOut"]</FpButton>
+</form>
 
 @code {
     private static readonly string[] _zones =

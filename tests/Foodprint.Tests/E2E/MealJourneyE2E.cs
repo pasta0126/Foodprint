@@ -37,16 +37,21 @@ public sealed class MealJourneyE2E(AppServerFixture app) : IAsyncLifetime
         // 2. Change language to Catalan and back to English from the profile page.
         await page.GotoAsync("/profile");
         await page.SelectOptionAsync("#lang", "ca");
-        await page.ClickAsync("main button[type=submit]");
+        await page.Locator("form:has(#lang) button[type=submit]").ClickAsync();
         await page.WaitForURLAsync("**/profile");
         await page.SelectOptionAsync("#lang", "en");
-        await page.ClickAsync("main button[type=submit]");
+        await page.Locator("form:has(#lang) button[type=submit]").ClickAsync();
         await page.WaitForURLAsync("**/profile");
+        // The profile page is the account hub: theme control + sign-out live here.
+        await Assertions.Expect(page.Locator("#fp-theme-control")).ToBeVisibleAsync();
+        await Assertions.Expect(page.Locator("main form[action='/auth/sign-out']")).ToBeVisibleAsync();
 
         // 3. Log an entry: grams portion + a meal group + tags.
         await page.GotoAsync("/entries/new");
         await page.FillAsync("#name", "Greek yogurt");
-        await page.CheckAsync("input[value=Grams]");
+        // The meal group is pre-selected from the time of day; it can be overridden.
+        Assert.NotEqual("", await page.Locator("#group").InputValueAsync());
+        await page.GetByText("I'd rather enter exact grams").ClickAsync();
         await page.FillAsync("#portion-grams", "250");
         await page.SelectOptionAsync("#group", new SelectOptionValue { Label = "Breakfast" });
         await page.FillAsync("#tags", "breakfast, quick");
@@ -69,9 +74,9 @@ public sealed class MealJourneyE2E(AppServerFixture app) : IAsyncLifetime
         await Assertions.Expect(page.GetByText("Current streak")).ToBeVisibleAsync();
         await Assertions.Expect(page.GetByText("#breakfast")).ToBeVisibleAsync();
 
-        // 6. Sign out, then sign back in with email + password.
-        await page.GotoAsync("/");
-        await page.ClickAsync("text=Sign out");
+        // 6. Sign out (from the profile page), then sign back in with email + password.
+        await page.GotoAsync("/profile");
+        await page.Locator("main form[action='/auth/sign-out'] button[type=submit]").ClickAsync();
         await page.WaitForURLAsync("**/sign-in");
         await page.FillAsync("#email", "alex@example.com");
         await page.FillAsync("#password", "correcthorse9");
