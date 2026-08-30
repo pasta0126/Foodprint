@@ -40,11 +40,12 @@
 
 ## 7. Portion input UX
 
-- [x] 7.1 Rework `MealEntryForm.razor` portion section: "no portion" + four size options as a segmented/radio row, each with plate glyph + localized description
+- [x] 7.1 Rework `MealEntryForm.razor` portion section: four size options as a segmented/radio row, each with plate glyph + localized description (no "no portion" option — portion is required)
 - [x] 7.2 Move grams into a collapsed `<details>` ("enter exact grams instead")
 - [x] 7.3 Update `MealEntryFormModel` so server-side `ToInput` derives XOR: grams (when the disclosure has a value) else selected size; keep the `PortionBothProvided` safety net
 - [x] 7.4 Show the chosen size's description/glyph on `MealEntryCard.razor`
 - [x] 7.5 bUnit test: selecting a size then entering grams saves grams and clears size; both-empty saves no portion
+- [x] 7.6 Portion required: `MealValidationError.PortionRequired` when neither size nor grams; wire `Meal.Error.PortionRequired` (ca/es/en) through `MealErrors`; drop the unused `Meal.Portion.None`/`Meal.Portion.Size` keys; update meal-logging spec ("Create a meal entry" + "Portion") and tests
 
 ## 8. Time-of-day meal-group suggestion
 

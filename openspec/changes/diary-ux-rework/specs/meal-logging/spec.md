@@ -1,12 +1,44 @@
 ## MODIFIED Requirements
 
+### Requirement: Create a meal entry
+
+An authenticated user SHALL be able to create a meal entry. The system SHALL
+require a non-empty name (1–120 characters), an eaten-at date/time (defaulting to
+the current server time), and a portion (see "Portion"). The system SHALL accept
+an optional meal group (see "Meal group"), optional notes (up to 1000
+characters), and an optional list of tags. The eaten-at time SHALL NOT be more
+than 24 hours in the future; there is no limit on how far in the past it may be.
+
+#### Scenario: Minimal valid entry
+
+- **WHEN** the user submits an entry with a name and a portion size
+- **THEN** the entry is saved with eaten-at defaulted to the current time
+- **AND** it appears in that day's view
+
+#### Scenario: Full entry
+
+- **WHEN** the user submits a name, past date/time, portion `large`, a meal group, notes, and two tags
+- **THEN** all fields are persisted and shown on the entry
+
+#### Scenario: Missing name
+
+- **WHEN** the user submits an entry with an empty or whitespace-only name
+- **THEN** the system rejects it with a validation message
+- **AND** nothing is saved
+
+#### Scenario: Far-future time
+
+- **WHEN** the user submits an eaten-at time more than 24 hours ahead
+- **THEN** the system rejects it with a validation message
+
 ### Requirement: Portion
 
-An entry's portion is optional. When provided, it SHALL be expressed in exactly
-one of two ways: a named size from the fixed set (`small`, `medium`, `large`,
-`very-large`), or a quantity in grams as a positive integer between 1 and 5000.
-The system SHALL reject an entry that specifies both, or a grams value outside
-that range.
+Every entry SHALL record a portion. It SHALL be expressed in exactly one of two
+ways: a named size from the fixed set (`small`, `medium`, `large`, `very-large`),
+or a quantity in grams as a positive integer between 1 and 5000. The system SHALL
+reject an entry that specifies neither, that specifies both, or that gives a grams
+value outside that range. Entries created before this rule may still have no
+portion; editing such an entry requires choosing one before it can be saved.
 
 Named sizes are defined against a standard flat dinner plate as the shared
 reference, so the amount can be estimated by eye:
@@ -25,6 +57,12 @@ of the two or neither.
 
 - **WHEN** the user selects portion size `medium`
 - **THEN** the entry is saved with a named portion and no grams value
+
+#### Scenario: Portion missing
+
+- **WHEN** the user submits an entry with neither a named size nor a grams value
+- **THEN** the system rejects it with a validation message
+- **AND** nothing is saved
 
 #### Scenario: Fourth named size
 

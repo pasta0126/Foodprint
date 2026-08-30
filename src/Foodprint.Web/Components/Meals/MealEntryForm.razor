@@ -30,12 +30,6 @@
         <legend class="fp-field__label">@L["Meal.Portion"]</legend>
         <InputRadioGroup @bind-Value="Model.PortionChoice">
             <div class="fp-portion__opts">
-                <label class="fp-portion__opt">
-                    <InputRadio Value="@_none" />
-                    <span class="fp-portion__text">
-                        <span class="fp-portion__label">@L["Meal.Portion.None"]</span>
-                    </span>
-                </label>
                 @foreach (var size in PortionSizes.All)
                 {
                     <label class="fp-portion__opt">
@@ -49,6 +43,7 @@
                 }
             </div>
         </InputRadioGroup>
+        <span class="fp-field__hint">@L["Meal.Error.PortionRequired"]</span>
 
         <details class="fp-portion__grams" open="@(Model.PortionGrams is not null)">
             <summary>@L["Meal.Portion.Grams.Toggle"]</summary>
@@ -92,7 +87,6 @@
     [Parameter] public string SubmitText { get; set; } = "Save";
     [Parameter] public string? ErrorText { get; set; }
 
-    private readonly string _none = "";
     private IReadOnlyList<MealGroupOption> _groups = [];
 
     protected override async Task OnInitializedAsync() => _groups = await Groups.ActiveAsync();

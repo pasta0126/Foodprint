@@ -15,6 +15,7 @@ public static class MealErrors
             MealValidationError.NameTooLong => "Meal.Error.NameTooLong",
             MealValidationError.EatenAtTooFarInFuture => "Meal.Error.FutureTime",
             MealValidationError.NotesTooLong => "Meal.Error.NotesTooLong",
+            MealValidationError.PortionRequired => "Meal.Error.PortionRequired",
             MealValidationError.PortionBothProvided => "Meal.Error.PortionBoth",
             MealValidationError.PortionSizeInvalid => "Meal.Error.PortionSize",
             MealValidationError.PortionGramsOutOfRange => "Meal.Error.PortionGrams",

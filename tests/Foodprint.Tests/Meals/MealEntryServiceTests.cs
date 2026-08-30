@@ -30,6 +30,7 @@ public class MealEntryServiceTests : IDisposable
     {
         Name = name,
         EatenAtUtc = _db.Clock.GetUtcNow().UtcDateTime.AddHours(-1),
+        PortionSize = "medium", // portion is required; tests that care override it
     };
 
     [Fact]
@@ -41,7 +42,7 @@ public class MealEntryServiceTests : IDisposable
         Assert.True(result.Ok);
         var view = await Entries().GetAsync(user, result.EntryId);
         Assert.Equal("Toast", view!.Name);
-        Assert.Null(view.PortionSize);
+        Assert.Equal("medium", view.PortionSize);
         Assert.Empty(view.Tags);
     }
 
@@ -82,6 +83,9 @@ public class MealEntryServiceTests : IDisposable
     {
         var user = await NewUser("port@example.com");
 
+        var none = Valid(); none.PortionSize = null; none.PortionGrams = null;
+        Assert.Equal(MealValidationError.PortionRequired, (await Entries().CreateAsync(user, none)).Error);
+
         var both = Valid(); both.PortionSize = "small"; both.PortionGrams = 100;
         Assert.Equal(MealValidationError.PortionBothProvided, (await Entries().CreateAsync(user, both)).Error);
 
@@ -90,11 +94,11 @@ public class MealEntryServiceTests : IDisposable
 
         foreach (var grams in new[] { 0, 5001 })
         {
-            var g = Valid(); g.PortionGrams = grams;
+            var g = Valid(); g.PortionSize = null; g.PortionGrams = grams;
             Assert.Equal(MealValidationError.PortionGramsOutOfRange, (await Entries().CreateAsync(user, g)).Error);
         }
 
-        var okG = Valid(); okG.PortionGrams = 250;
+        var okG = Valid(); okG.PortionSize = null; okG.PortionGrams = 250;
         Assert.True((await Entries().CreateAsync(user, okG)).Ok);
     }
 

@@ -111,7 +111,10 @@ public class MealEntry
     /// <summary>Instant the meal was eaten, stored UTC (server clock).</summary>
     public DateTime EatenAt { get; set; }
 
-    /// <summary>Named portion size (small/medium/large) XOR <see cref="PortionGrams"/>.</summary>
+    /// <summary>
+    /// Named portion size (small/medium/large/very-large) XOR <see cref="PortionGrams"/>.
+    /// New and edited entries require exactly one of the two; older rows may have neither.
+    /// </summary>
     public string? PortionSize { get; set; }
 
     /// <summary>Portion in grams (1..5000) XOR <see cref="PortionSize"/>.</summary>

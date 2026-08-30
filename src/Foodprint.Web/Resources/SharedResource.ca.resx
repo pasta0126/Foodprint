@@ -70,8 +70,6 @@
   <data name="Meal.Name" xml:space="preserve"><value>Nom</value></data>
   <data name="Meal.EatenAt" xml:space="preserve"><value>Data i hora</value></data>
   <data name="Meal.Portion" xml:space="preserve"><value>Ració</value></data>
-  <data name="Meal.Portion.None" xml:space="preserve"><value>Sense indicar</value></data>
-  <data name="Meal.Portion.Size" xml:space="preserve"><value>Mida</value></data>
   <data name="Meal.Portion.Grams" xml:space="preserve"><value>Grams</value></data>
   <data name="Meal.Portion.Grams.Toggle" xml:space="preserve"><value>Prefereixo indicar els grams exactes</value></data>
   <data name="Meal.Size.small" xml:space="preserve"><value>Petita</value></data>
@@ -95,6 +93,7 @@
   <data name="Meal.Error.NameTooLong" xml:space="preserve"><value>El nom és massa llarg.</value></data>
   <data name="Meal.Error.FutureTime" xml:space="preserve"><value>La data no pot estar tan al futur.</value></data>
   <data name="Meal.Error.NotesTooLong" xml:space="preserve"><value>Les notes són massa llargues.</value></data>
+  <data name="Meal.Error.PortionRequired" xml:space="preserve"><value>Indica la mida de la ració (o els grams).</value></data>
   <data name="Meal.Error.PortionBoth" xml:space="preserve"><value>Indica la mida o els grams, no tots dos.</value></data>
   <data name="Meal.Error.PortionSize" xml:space="preserve"><value>Mida de ració no vàlida.</value></data>
   <data name="Meal.Error.PortionGrams" xml:space="preserve"><value>Els grams han d'estar entre 1 i 5000.</value></data>

@@ -70,8 +70,6 @@
   <data name="Meal.Name" xml:space="preserve"><value>Nombre</value></data>
   <data name="Meal.EatenAt" xml:space="preserve"><value>Fecha y hora</value></data>
   <data name="Meal.Portion" xml:space="preserve"><value>Ración</value></data>
-  <data name="Meal.Portion.None" xml:space="preserve"><value>Sin indicar</value></data>
-  <data name="Meal.Portion.Size" xml:space="preserve"><value>Tamaño</value></data>
   <data name="Meal.Portion.Grams" xml:space="preserve"><value>Gramos</value></data>
   <data name="Meal.Portion.Grams.Toggle" xml:space="preserve"><value>Prefiero indicar los gramos exactos</value></data>
   <data name="Meal.Size.small" xml:space="preserve"><value>Pequeña</value></data>
@@ -95,6 +93,7 @@
   <data name="Meal.Error.NameTooLong" xml:space="preserve"><value>El nombre es demasiado largo.</value></data>
   <data name="Meal.Error.FutureTime" xml:space="preserve"><value>La fecha no puede estar tan en el futuro.</value></data>
   <data name="Meal.Error.NotesTooLong" xml:space="preserve"><value>Las notas son demasiado largas.</value></data>
+  <data name="Meal.Error.PortionRequired" xml:space="preserve"><value>Indica el tamaño de la ración (o los gramos).</value></data>
   <data name="Meal.Error.PortionBoth" xml:space="preserve"><value>Indica el tamaño o los gramos, no ambos.</value></data>
   <data name="Meal.Error.PortionSize" xml:space="preserve"><value>Tamaño de ración no válido.</value></data>
   <data name="Meal.Error.PortionGrams" xml:space="preserve"><value>Los gramos deben estar entre 1 y 5000.</value></data>

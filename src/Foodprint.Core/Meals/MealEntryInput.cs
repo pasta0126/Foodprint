@@ -21,6 +21,7 @@ public enum MealValidationError
     NameTooLong,
     EatenAtTooFarInFuture,
     NotesTooLong,
+    PortionRequired,
     PortionBothProvided,
     PortionSizeInvalid,
     PortionGramsOutOfRange,
@@ -85,6 +86,11 @@ public static class MealEntryRules
         if ((input.Notes?.Length ?? 0) > NotesMax)
         {
             return new(MealValidationError.NotesTooLong);
+        }
+
+        if (input.PortionSize is null && input.PortionGrams is null)
+        {
+            return new(MealValidationError.PortionRequired);
         }
 
         if (input.PortionSize is not null && input.PortionGrams is not null)

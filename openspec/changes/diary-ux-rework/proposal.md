@@ -19,10 +19,11 @@ common path is obvious and quick on a phone.
 - **Profile page becomes the account hub**: language selector (already there),
   theme preference, and sign-out all live on `/profile`. The header no longer
   renders the language switcher, the theme toggle, or a sign-out form.
-- **Portion input simplified**: plate-referenced named size is the primary,
-  default way to record a portion; grams becomes a secondary ("more precise")
-  option that is collapsed by default. The form makes clear it is one or the
-  other, never both.
+- **Portion input simplified and now required** — **BREAKING** (portion was
+  optional): plate-referenced named size is the primary way to record a portion;
+  grams becomes a secondary ("more precise") option that is collapsed by default.
+  Every new or edited entry must carry exactly one of the two — never neither,
+  never both. Pre-existing portionless rows stay as they are until edited.
 - **Portion size semantics + a fourth level** — **BREAKING** (named-size set
   changes): sizes are redefined against a standard flat plate as the reference,
   and a fourth size is added:
