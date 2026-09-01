@@ -134,7 +134,7 @@ public class MealEntry
 
 /// <summary>
 /// A saved meal template scoped to one user: the reusable parts of an entry
-/// (name, portion, meal group, tags) with no time or notes. Surfaced as quick-add
+/// (name, portion, meal group, tags, notes) with no time. Surfaced as quick-add
 /// cards. Identified by user + normalized name + meal group.
 /// </summary>
 public class MealFavorite
@@ -159,6 +159,8 @@ public class MealFavorite
 
     /// <summary>Normalized tags joined by ", ". Empty string when none.</summary>
     public string TagsCsv { get; set; } = "";
+
+    public string? Notes { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;

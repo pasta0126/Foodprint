@@ -12,6 +12,7 @@ public sealed class FavoriteDraft
     public int? PortionGrams { get; set; }
     public int? MealGroupId { get; set; }
     public IReadOnlyList<string> Tags { get; set; } = [];
+    public string? Notes { get; set; }
 }
 
 public sealed record MealFavoriteView(
@@ -21,7 +22,8 @@ public sealed record MealFavoriteView(
     int? PortionGrams,
     int? MealGroupId,
     string? MealGroupKey,
-    IReadOnlyList<string> Tags);
+    IReadOnlyList<string> Tags,
+    string? Notes);
 
 /// <summary>Favorites for one meal group (or the "no group" bucket when <see cref="Key"/> is null).</summary>
 public sealed record FavoriteGroup(int? MealGroupId, string? Key, IReadOnlyList<MealFavoriteView> Favorites);
@@ -57,6 +59,7 @@ public sealed class MealFavoriteService(AppDbContext db, TimeProvider clock)
         existing.PortionSize = draft.PortionSize;
         existing.PortionGrams = draft.PortionGrams;
         existing.TagsCsv = tagsCsv;
+        existing.Notes = draft.Notes;
         existing.UpdatedAt = now;
 
         await db.SaveChangesAsync(ct);
@@ -112,5 +115,5 @@ public sealed class MealFavoriteService(AppDbContext db, TimeProvider clock)
 
     internal static MealFavoriteView ToView(MealFavorite f) => new(
         f.Id, f.Name, f.PortionSize, f.PortionGrams,
-        f.MealGroupId, f.MealGroup?.Key, FromCsv(f.TagsCsv));
+        f.MealGroupId, f.MealGroup?.Key, FromCsv(f.TagsCsv), f.Notes);
 }

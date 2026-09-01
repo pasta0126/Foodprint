@@ -76,6 +76,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             e.Property(f => f.NameNormalized).HasMaxLength(120);
             e.Property(f => f.PortionSize).HasMaxLength(16);
             e.Property(f => f.TagsCsv).HasMaxLength(400);
+            e.Property(f => f.Notes).HasMaxLength(1000);
             e.HasOne(f => f.User).WithMany(u => u.Favorites)
                 .HasForeignKey(f => f.UserId).OnDelete(DeleteBehavior.Cascade);
             e.HasOne(f => f.MealGroup).WithMany()

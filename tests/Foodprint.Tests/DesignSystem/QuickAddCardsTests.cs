@@ -10,7 +10,7 @@ public class QuickAddCardsTests : TestContext
     public QuickAddCardsTests() => Services.AddLocalization();
 
     private static MealFavoriteView Fav(string name, string? group, int? groupId) =>
-        new(Guid.NewGuid(), name, "small", null, groupId, group, ["quick"]);
+        new(Guid.NewGuid(), name, "small", null, groupId, group, ["quick"], null);
 
     [Fact]
     public void Renders_a_group_per_meal_group_and_a_delete_form_per_card()

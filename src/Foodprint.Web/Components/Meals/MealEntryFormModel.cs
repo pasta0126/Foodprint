@@ -55,7 +55,7 @@ public sealed class MealEntryFormModel
         TagsText = string.Join(", ", v.Tags),
     };
 
-    /// <summary>Pre-fill from a favorite: its name, portion, group and tags, with eaten-at set to now.</summary>
+    /// <summary>Pre-fill from a favorite: its name, portion, group, tags and notes, with eaten-at set to now.</summary>
     public static MealEntryFormModel FromFavorite(MealFavoriteView f, DateTime nowLocal) => new()
     {
         Name = f.Name,
@@ -64,6 +64,7 @@ public sealed class MealEntryFormModel
         PortionGrams = f.PortionGrams,
         MealGroupId = f.MealGroupId,
         TagsText = string.Join(", ", f.Tags),
+        Notes = f.Notes,
     };
 
     public FavoriteDraft ToFavoriteDraft() => new()
@@ -73,5 +74,6 @@ public sealed class MealEntryFormModel
         PortionSize = PortionGrams is null && !string.IsNullOrEmpty(PortionChoice) ? PortionChoice : null,
         MealGroupId = MealGroupId,
         Tags = ParseTags(),
+        Notes = Notes,
     };
 }

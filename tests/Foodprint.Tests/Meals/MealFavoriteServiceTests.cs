@@ -45,6 +45,26 @@ public class MealFavoriteServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task Save_and_re_save_carry_notes()
+    {
+        var user = await NewUser("notes@example.com");
+        var draft = Draft("Greek yogurt", "small", 1);
+        draft.Notes = "with honey";
+
+        var fav = await Favorites().SaveAsync(user, draft);
+
+        var view = await Favorites().GetAsync(user, fav.Id);
+        Assert.Equal("with honey", view!.Notes);
+
+        var updated = Draft("Greek yogurt", "small", 1);
+        updated.Notes = "no honey";
+        await Favorites().SaveAsync(user, updated);
+
+        var reView = await Favorites().GetAsync(user, fav.Id);
+        Assert.Equal("no honey", reView!.Notes);
+    }
+
+    [Fact]
     public async Task Re_saving_same_name_and_group_updates_in_place()
     {
         var user = await NewUser("b@example.com");
